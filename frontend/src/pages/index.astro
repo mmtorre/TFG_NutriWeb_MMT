@@ -1,0 +1,149 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+---
+
+<Layout>
+  <!-- Menú de Navegación -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="icon">🥑</span>
+        NutriWeb <span class="year">2026</span>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/" class="active">Inicio</a></li>
+        <li><a href="/alimentos">Alimentos</a></li>
+      </ul>
+      <span id="login-btn"></span>
+    </div>
+  </nav>
+
+  <!-- Sección Hero -->
+  <header id="inicio" class="hero">
+    <div class="hero-content">
+      <span class="badge">Tu vida, más saludable</span>
+      <h1>Nutrición inteligente para <span class="highlight">resultados reales</span></h1>
+      <div class="hero-description">
+        <p class="intro-text">
+          Una buena nutrición es el pilar fundamental para una vida plena. Una dieta equilibrada no solo previene enfermedades crónicas, sino que potencia tu nivel de energía y mejora tu bienestar físico y mental.
+        </p>
+        
+        <div class="services-list">
+          <div class="service-item">
+            <span class="service-icon">🎯</span>
+            <p><strong>Consejos a tu medida:</strong> Recibe orientaciones nutricionales inteligentes basadas exclusivamente en los datos de tu perfil y objetivos físicos.</p>
+          </div>
+          <div class="service-item">
+            <span class="service-icon">🥗</span>
+            <p><strong>Planes nutricionales automáticos:</strong> Diseñamos una dieta única para ti utilizando los valores nutricionales reales de los alimentos disponibles en nuestro extenso catálogo de la API.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-buttons" style="margin-top: 2.5rem;">
+        <a href="/login" id="hero-cta-btn" class="btn-primary large" style="text-decoration: none;">Empezar ahora</a>
+      </div>
+    </div>
+    
+    <!-- Decoración visual (Círculos difuminados de fondo) -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </header>
+
+  <main class="container">
+    
+
+
+  </main>
+
+  <footer>
+    <p>© 2026 NutriWeb. Todos los derechos reservados.</p>
+  </footer>
+</Layout>
+
+<style>
+  .hero-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .intro-text {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0 auto 2.5rem auto;
+    max-width: 700px;
+  }
+  .services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: left;
+    background: rgba(15, 23, 42, 0.4);
+    padding: 2.5rem;
+    border-radius: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .service-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+  }
+  .service-icon {
+    font-size: 1.5rem;
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--primary);
+    padding: 0.8rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .service-item p {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .service-item strong {
+    color: var(--text-main);
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 1.15rem;
+  }
+</style>
+
+<script>
+
+  // Lógica user login
+  const userName = localStorage.getItem('userName');
+  const loginBtn = document.getElementById('login-btn');
+  if (userName && loginBtn) {
+    loginBtn.outerHTML = `
+      <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
+        <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
+        <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
+      </div>
+    `;
+    
+    document.getElementById('logout-btn')?.addEventListener('click', () => {
+      localStorage.removeItem('userName');
+      window.location.reload();
+    });
+  }
+
+  // Lógica Hero CTA Button dinámico
+  const heroCtaBtn = document.getElementById('hero-cta-btn') as HTMLAnchorElement;
+  if (userName && heroCtaBtn) {
+    heroCtaBtn.textContent = 'Comenzar plan';
+    heroCtaBtn.href = '/evaluacion'; // Redirigir al formulario de datos iniciales
+  }
+</script>
+
+

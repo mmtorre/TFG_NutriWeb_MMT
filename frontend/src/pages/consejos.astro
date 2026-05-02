@@ -1,0 +1,560 @@
+---
+import Layout from "../layouts/Layout.astro";
+import "../styles/global.css";
+---
+
+<Layout>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <a
+          href="/"
+          style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:0.5rem;"
+        >
+          <span class="icon">🥑</span>
+          NutriWeb <span class="year">2026</span>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/alimentos">Alimentos</a></li>
+      </ul>
+      <span id="login-btn"></span>
+    </div>
+  </nav>
+
+  <main class="container consejos-container">
+    <div class="card consejos-card">
+      <div id="loading-state" style="text-align: center; padding: 3rem;">
+        <p>Cargando tus consejos personalizados...</p>
+      </div>
+
+      <!-- SECCIÓN: PÉRDIDA DE GRASA -->
+      <div id="seccion-perdida" style="display: none; animation: fadeIn 0.5s ease;">
+        <div class="card-header" style="justify-content:center; margin-bottom:2rem; flex-direction:column; gap:0.5rem; text-align:center;">
+          <div class="server-icon" style="font-size:2.5rem; background:transparent; padding:0;">🔥</div>
+          <h2 style="font-size: 2rem; margin:0;">Pérdida de Grasa</h2>
+          <p style="margin:0; opacity:0.8; font-size:1.1rem;">
+            Déficit calórico controlado para perder grasa preservando músculo
+          </p>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <span class="summary-icon">📉</span>
+            <strong>-300-500 kcal</strong>
+            <span class="summary-label">Déficit diario</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-icon">🥩</span>
+            <strong>30-35%</strong>
+            <span class="summary-label">Proteína del total</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-icon">⚖️</span>
+            <strong>0,5 kg</strong>
+            <span class="summary-label">Pérdida semanal ideal</span>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title">Claves Principales</h3>
+          <ul class="claves-list">
+            <li>
+              <span class="clave-icon">🍗</span>
+              <div>
+                <strong>Proteína alta:</strong> Consume 1,6–2 g de proteína por kg de peso. Protege la masa muscular durante el déficit.
+              </div>
+            </li>
+            <li>
+              <span class="clave-icon">🥗</span>
+              <div>
+                <strong>Volumen de comida:</strong> Prioriza alimentos con mucho volumen y pocas calorías: verduras, legumbres, frutas.
+              </div>
+            </li>
+            <li>
+              <span class="clave-icon">⏱️</span>
+              <div>
+                <strong>Distribución de comidas:</strong> 3–5 comidas al día ayudan a controlar el hambre y mantener niveles de energía estables.
+              </div>
+            </li>
+            <li>
+              <span class="clave-icon">💧</span>
+              <div>
+                <strong>Hidratación clave:</strong> Bebe 2–3 litros de agua al día. El agua ayuda a reducir la sensación de hambre.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title">Alimentos Recomendados</h3>
+          <div class="tags-container">
+            <span class="food-tag">Pollo</span>
+            <span class="food-tag">Claras de huevo</span>
+            <span class="food-tag">Atún al natural</span>
+            <span class="food-tag">Brócoli</span>
+            <span class="food-tag">Espinacas</span>
+            <span class="food-tag">Avena</span>
+            <span class="food-tag">Yogur griego 0%</span>
+            <span class="food-tag">Frutos del bosque</span>
+            <span class="food-tag">Legumbres</span>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title text-danger">Limitar o Evitar</h3>
+          <div class="avoid-grid">
+            <div class="avoid-card">
+              <span class="avoid-icon">🍩</span>
+              <p>Ultraprocesados, bollería y bebidas azucaradas.</p>
+            </div>
+            <div class="avoid-card">
+              <span class="avoid-icon">🍷</span>
+              <p><strong>Alcohol:</strong> Es calóricamente denso y reduce la oxidación de grasas.</p>
+            </div>
+            <div class="avoid-card">
+              <span class="avoid-icon">🍯</span>
+              <p>Salsas y aderezos altos en grasa o azúcar.</p>
+            </div>
+            <div class="avoid-card border-danger">
+              <span class="avoid-icon">⚠️</span>
+              <p><strong>Déficit extremo (<1200 kcal):</strong> Causa pérdida muscular y fatiga.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN: GANAR MASA MUSCULAR -->
+      <div id="seccion-ganar" style="display: none; animation: fadeIn 0.5s ease;">
+        <div class="card-header" style="justify-content:center; margin-bottom:2rem; flex-direction:column; gap:0.5rem; text-align:center;">
+          <div class="server-icon" style="font-size:2.5rem; background:transparent; padding:0;">💪</div>
+          <h2 style="font-size: 2rem; margin:0;">Ganar Masa Muscular</h2>
+          <p style="margin:0; opacity:0.8; font-size:1.1rem;">
+            Superávit calórico moderado con alta proteína para maximizar la síntesis muscular
+          </p>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <span class="summary-icon">📈</span>
+            <strong>+200-400 kcal</strong>
+            <span class="summary-label">Superávit diario</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-icon">🥩</span>
+            <strong>1,6-2,2 g</strong>
+            <span class="summary-label">Proteína por kg de peso</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-icon">⚖️</span>
+            <strong>0,25-0,5 kg</strong>
+            <span class="summary-label">Ganancia semanal ideal</span>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title">Claves Principales</h3>
+          <ul class="claves-list">
+            <li>
+              <span class="clave-icon">🍗</span>
+              <div>
+                <strong>Proteína distribuida:</strong> Reparte la proteína en 4–5 tomas de 30–40 g para maximizar la síntesis proteica muscular.
+              </div>
+            </li>
+            <li>
+              <span class="clave-icon">🍝</span>
+              <div>
+                <strong>Carbohidratos como combustible:</strong> Los hidratos son tu aliado: proporcionan energía para el entrenamiento e inhiben el catabolismo.
+              </div>
+            </li>
+            <li>
+              <span class="clave-icon">⏱️</span>
+              <div>
+                <strong>Nutrición peri-entreno:</strong> Consume carbohidratos y proteína antes y después del entreno para optimizar la recuperación.
+              </div>
+            </li>
+            <li>
+              <span class="clave-icon">💤</span>
+              <div>
+                <strong>Sueño y recuperación:</strong> El músculo crece durante el descanso. Duerme 7–9 horas y considera una caseína nocturna.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title">Alimentos Recomendados</h3>
+          <div class="tags-container">
+            <span class="food-tag">Carne magra</span>
+            <span class="food-tag">Huevos enteros</span>
+            <span class="food-tag">Queso cottage</span>
+            <span class="food-tag">Pasta integral</span>
+            <span class="food-tag">Patata y arroz</span>
+            <span class="food-tag">Plátano</span>
+            <span class="food-tag">Frutos secos</span>
+            <span class="food-tag">Leche entera</span>
+            <span class="food-tag">Aceite de oliva</span>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title text-danger">Errores comunes a evitar</h3>
+          <div class="avoid-grid">
+            <div class="avoid-card">
+              <span class="avoid-icon">🍔</span>
+              <p><strong>Superávit excesivo (+500 kcal):</strong> aumenta más grasa que músculo.</p>
+            </div>
+            <div class="avoid-card">
+              <span class="avoid-icon">📉</span>
+              <p><strong>Poca proteína:</strong> sin materia prima, no hay construcción muscular.</p>
+            </div>
+            <div class="avoid-card">
+              <span class="avoid-icon">🕒</span>
+              <p>Saltarse comidas después del entreno: ventana anabólica desaprovechada.</p>
+            </div>
+            <div class="avoid-card border-danger">
+              <span class="avoid-icon">⚠️</span>
+              <p>No ajustar calorías cuando el peso se estanca durante 2+ semanas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN: MANTENIMIENTO -->
+      <div id="seccion-mantenimiento" style="display: none; animation: fadeIn 0.5s ease;">
+        <div class="card-header" style="justify-content:center; margin-bottom:2rem; flex-direction:column; gap:0.5rem; text-align:center;">
+          <div class="server-icon" style="font-size:2.5rem; background:transparent; padding:0;">⚖️</div>
+          <h2 style="font-size: 2rem; margin:0;">Mantenimiento</h2>
+          <p style="margin:0; opacity:0.8; font-size:1.1rem;">
+            Equilibrio calórico para sostener el peso y la composición corporal actuales
+          </p>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <span class="summary-icon">🔄</span>
+            <strong>±0 kcal</strong>
+            <span class="summary-label">Balance calórico</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-icon">🥩</span>
+            <strong>25-30%</strong>
+            <span class="summary-label">Proteína del total</span>
+          </div>
+          <div class="summary-card">
+            <span class="summary-icon">🧩</span>
+            <strong>Flexible</strong>
+            <span class="summary-label">Distribución de macros</span>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title">Claves Principales</h3>
+          <ul class="claves-list">
+            <li>
+              <span class="clave-icon">🧘‍♂️</span>
+              <div>
+                <strong>Control sin obsesión:</strong> Monitorea el peso semana a semana, no día a día. Las fluctuaciones diarias son normales y no indican cambios reales.
+              </div>
+            </li>
+            <li>
+              <span class="clave-icon">🌈</span>
+              <div>
+                <strong>Variedad nutricional:</strong> Prioriza una dieta variada y colorida para cubrir todos los micronutrientes esenciales sin necesidad de suplementos.
+              </div>
+            </li>
+            <li>
+              <span class="clave-icon">🏃‍♂️</span>
+              <div>
+                <strong>Ajusta según actividad:</strong> Los días de mayor actividad física incrementa ligeramente los carbohidratos. Los días de descanso, reduce un poco.
+              </div>
+            </li>
+            <li>
+              <span class="clave-icon">🎉</span>
+              <div>
+                <strong>Calidad de vida:</strong> Incluye comidas sociales y caprichos ocasionales. La adherencia a largo plazo es más importante que la perfección diaria.
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title">Alimentos Base Recomendados</h3>
+          <div class="tags-container">
+            <span class="food-tag">Arroz integral</span>
+            <span class="food-tag">Huevos enteros</span>
+            <span class="food-tag">Salmón</span>
+            <span class="food-tag">Aguacate</span>
+            <span class="food-tag">Verduras variadas</span>
+            <span class="food-tag">Fruta entera</span>
+            <span class="food-tag">Legumbres</span>
+            <span class="food-tag">Frutos secos</span>
+            <span class="food-tag">Aceite de oliva</span>
+          </div>
+        </div>
+
+        <div class="content-section">
+          <h3 class="section-title text-danger">Puntos a vigilar</h3>
+          <div class="avoid-grid">
+            <div class="avoid-card">
+              <span class="avoid-icon">🍿</span>
+              <p>El <strong>picoteo inconsciente</strong> puede romper el equilibrio calórico fácilmente.</p>
+            </div>
+            <div class="avoid-card">
+              <span class="avoid-icon">🚫</span>
+              <p><strong>No saltar comidas:</strong> aumenta el riesgo de comer en exceso después.</p>
+            </div>
+            <div class="avoid-card">
+              <span class="avoid-icon">📅</span>
+              <p>Revisar el <strong>TDEE</strong> cada 2–3 meses si el peso cambia.</p>
+            </div>
+            <div class="avoid-card border-danger">
+              <span class="avoid-icon">😫</span>
+              <p>El <strong>estrés y el mal sueño</strong> afectan negativamente al apetito y al metabolismo.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones Inferiores -->
+      <div class="results-actions" style="margin-top: 3rem;">
+        <a href="/" class="btn-secondary" style="text-align:center; text-decoration:none; padding:1rem;">Volver al Inicio</a>
+        <a href="/plan" class="btn-primary" style="text-align:center; text-decoration:none; padding:1rem;">Ver Plan Nutricional</a>
+      </div>
+
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .consejos-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 6rem;
+    padding-bottom: 3rem;
+  }
+
+  .consejos-card {
+    max-width: 800px;
+    width: 100%;
+    backdrop-filter: blur(12px);
+    background: rgba(30, 41, 59, 0.7);
+    padding: 2.5rem;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .summary-card {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .summary-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .summary-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .summary-card strong {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .summary-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .content-section {
+    margin-top: 2.5rem;
+    background: rgba(15, 23, 42, 0.4);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .section-title {
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 0.5rem;
+    color: var(--text-main);
+  }
+
+  .text-danger {
+    color: #ef4444;
+    border-bottom-color: rgba(239, 68, 68, 0.3);
+  }
+
+  .claves-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .claves-list li {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .clave-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .claves-list strong {
+    color: var(--primary);
+  }
+
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .food-tag {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .avoid-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .avoid-card {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .avoid-card.border-danger {
+    border-color: rgba(239, 68, 68, 0.6);
+    background: rgba(239, 68, 68, 0.15);
+  }
+
+  .avoid-icon {
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .avoid-card p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #fca5a5;
+  }
+
+  .avoid-card strong {
+    color: #ef4444;
+  }
+
+  .results-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .results-actions > * {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<script>
+  const userName = localStorage.getItem("userName");
+  const userEmail = localStorage.getItem("userEmail");
+  const loginBtn = document.getElementById("login-btn");
+
+  if (!userName || !userEmail) {
+    window.location.href = "/login";
+  } else if (loginBtn) {
+    loginBtn.outerHTML = `
+      <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
+        <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
+        <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
+      </div>
+    `;
+
+    document.getElementById("logout-btn")?.addEventListener("click", () => {
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userEmail");
+      window.location.href = "/";
+    });
+  }
+
+  window.addEventListener("DOMContentLoaded", async () => {
+    const loadingState = document.getElementById("loading-state");
+    const secPerdida = document.getElementById("seccion-perdida");
+    const secGanar = document.getElementById("seccion-ganar");
+    const secMantener = document.getElementById("seccion-mantenimiento");
+
+    if (!userEmail) return;
+
+    try {
+      const response = await fetch(`http://localhost:8080/api/userdata/${userEmail}`);
+      if (!response.ok) throw new Error("Error al obtener datos");
+      
+      const data = await response.json();
+      
+      if (loadingState) loadingState.style.display = "none";
+
+      const objetivo = data.objetivo;
+      
+      if (objetivo === "PERDIDA_GRASA" && secPerdida) {
+        secPerdida.style.display = "block";
+      } else if (objetivo === "GANAR_MASA" && secGanar) {
+        secGanar.style.display = "block";
+      } else if (objetivo === "MANTENIMIENTO" && secMantener) {
+        secMantener.style.display = "block";
+      } else {
+        // Fallback por si no tiene objetivo asignado
+        if (secMantener) secMantener.style.display = "block";
+      }
+
+    } catch (err) {
+      console.error(err);
+      if (loadingState) {
+        loadingState.innerHTML = "<p style='color:#ef4444'>Error al cargar tus datos. Vuelve al inicio y reintenta.</p>";
+      }
+    }
+  });
+</script>

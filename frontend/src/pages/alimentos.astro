@@ -1,0 +1,277 @@
+---
+import Layout from '../layouts/Layout.astro';
+import '../styles/global.css';
+---
+
+<Layout>
+  <!-- Menú de Navegación -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <a href="/" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:0.5rem;">
+          <span class="icon">🥑</span>
+          NutriWeb <span class="year">2026</span>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/alimentos" class="active">Alimentos</a></li>
+      </ul>
+      <span id="login-btn"></span>
+    </div>
+  </nav>
+
+  <main class="container alimentos-container">
+    <div class="header-section">
+      <span class="badge">Base de datos nutricional</span>
+      <h1 class="page-title">Catálogo de <span class="highlight">Alimentos</span></h1>
+      <p class="subtitle">Explora nuestra selección de ingredientes y conoce sus propiedades nutricionales para potenciar tu salud diaria.</p>
+    </div>
+
+    <!-- loader -->
+    <div id="loader" class="loader-container">
+      <div class="pulse"></div>
+      <p>Cargando información nutricional...</p>
+    </div>
+
+    <!-- error -->
+    <div id="error-container" class="error-msg" style="display: none; max-width: 600px; margin: 0 auto;"></div>
+
+    <div id="alimentos-grid" class="alimentos-grid">
+      <!-- Las tarjetas se inyectarán aquí vía JS -->
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .alimentos-container {
+    padding-top: 8rem;
+    min-height: 100vh;
+  }
+
+  .header-section {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 4rem auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  .page-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    color: var(--text-muted);
+    margin: 5rem 0;
+  }
+
+  .pulse {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    animation: loader-pulse 1.5s infinite ease-in-out;
+  }
+
+  @keyframes loader-pulse {
+    0% { transform: scale(0.8); opacity: 0.3; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.8); opacity: 0.3; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+  }
+
+  .alimentos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+    position: relative;
+    z-index: 10;
+  }
+</style>
+
+<style is:global>
+  /* Global styles for dynamically injected cards */
+  .food-card {
+    background: var(--bg-card);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+  }
+
+  .food-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .food-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(16, 185, 129, 0.3);
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(16, 185, 129, 0.15);
+  }
+
+  .food-card:hover::before {
+    opacity: 1;
+  }
+
+  .food-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+    padding-right: 5rem; /* space for badge */
+  }
+
+  .macro-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: auto;
+  }
+
+  .macro-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .macro-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .macro-label {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .macro-value {
+    font-weight: 600;
+    color: var(--secondary);
+    background: rgba(255,255,255,0.05);
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.5rem;
+  }
+  
+  .cal-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--primary);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+</style>
+
+<script>
+  // Auth logic (similar to index)
+  const userName = localStorage.getItem('userName');
+  const loginBtn = document.getElementById('login-btn');
+  if (userName && loginBtn) {
+    loginBtn.outerHTML = `
+      <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
+        <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
+        <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
+      </div>
+    `;
+    
+    document.getElementById('logout-btn')?.addEventListener('click', () => {
+      localStorage.removeItem('userName');
+      window.location.reload();
+    });
+  }
+
+  // Fetch foods
+  async function fetchAlimentos() {
+    const loader = document.getElementById('loader');
+    const grid = document.getElementById('alimentos-grid');
+    const errorContainer = document.getElementById('error-container');
+
+    try {
+      const res = await fetch('http://localhost:8080/api/alimentos');
+      if (!res.ok) throw new Error('Error al conectar con la API de Alimentos');
+      
+      const alimentos = await res.json();
+      
+      if (loader) loader.style.display = 'none';
+      
+      if (grid) {
+        if (!alimentos || alimentos.length === 0) {
+          grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 1.1rem; background: var(--bg-card); padding: 3rem; border-radius: 1.5rem; border: 1px dashed rgba(255,255,255,0.1);">No hay registros de alimentos disponibles en este momento.</p>';
+        } else {
+          grid.innerHTML = alimentos.map((food: any) => `
+            <div class="food-card">
+              <div class="cal-badge">${food.calorias} kcal</div>
+              <div class="food-name">${food.nombre}</div>
+              <div class="macro-list">
+                <div class="macro-item">
+                  <span class="macro-label">🥩 Proteínas</span>
+                  <span class="macro-value">${food.proteinas}g</span>
+                </div>
+                <div class="macro-item">
+                  <span class="macro-label">🌾 Carbos</span>
+                  <span class="macro-value">${food.carbohidratos}g</span>
+                </div>
+                <div class="macro-item">
+                  <span class="macro-label">🥑 Grasas</span>
+                  <span class="macro-value">${food.grasas}g</span>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+        
+        // Show with fade-in effect
+        requestAnimationFrame(() => {
+          grid.style.opacity = '1';
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      if (loader) loader.style.display = 'none';
+      if (errorContainer) {
+        errorContainer.textContent = 'Hubo un problema al cargar los alimentos. Asegúrate de que el servidor esté en funcionamiento.';
+        errorContainer.style.display = 'block';
+      }
+    }
+  }
+
+  // Execute on load
+  fetchAlimentos();
+</script>

@@ -1,0 +1,496 @@
+---
+import Layout from "../layouts/Layout.astro";
+import "../styles/global.css";
+---
+
+<Layout>
+  <!-- Menú de Navegación Simple -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <a
+          href="/"
+          style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:0.5rem;"
+        >
+          <span class="icon">🥑</span>
+          NutriWeb <span class="year">2026</span>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/alimentos">Alimentos</a></li>
+      </ul>
+      <span id="login-btn"></span>
+    </div>
+  </nav>
+
+  <main class="container eval-container">
+    <div class="card eval-card">
+      <div
+        class="card-header"
+        style="justify-content:center; margin-bottom:2rem; flex-direction:column; gap:0.5rem; text-align:center;"
+      >
+        <div
+          class="server-icon"
+          style="font-size:2.5rem; background:transparent; padding:0;"
+        >
+          📈
+        </div>
+        <h2 style="font-size: 2rem; margin:0;">Evaluación Inicial</h2>
+        <p style="margin:0; opacity:0.8;">
+          Ingresa tus datos físicos para generar tu plan nutricional a medida.
+        </p>
+      </div>
+
+      <form id="eval-form" class="eval-form">
+        <!-- Flex container for two columns -->
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="edad">Edad (años)</label>
+            <input
+              type="number"
+              id="edad"
+              name="edad"
+              required
+              min="1"
+              max="120"
+              placeholder="Ej: 25"
+              class="input-field"
+            />
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="sexo">Sexo biológico</label>
+            <select id="sexo" name="sexo" required class="input-field">
+              <option value="" disabled selected>Selecciona...</option>
+              <option value="MASCULINO">Masculino</option>
+              <option value="FEMENINO">Femenino</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label for="peso">Peso (kg)</label>
+            <input
+              type="number"
+              step="0.1"
+              id="peso"
+              name="peso"
+              required
+              min="20"
+              max="300"
+              placeholder="Ej: 70.5"
+              class="input-field"
+            />
+          </div>
+
+          <div class="form-group flex-1">
+            <label for="altura">Altura (cm)</label>
+            <input
+              type="number"
+              step="1"
+              id="altura"
+              name="altura"
+              required
+              min="50"
+              max="250"
+              placeholder="Ej: 175"
+              class="input-field"
+            />
+          </div>
+        </div>
+
+        <div class="form-row" style="margin-top: 0.5rem;">
+          <div class="form-group flex-1">
+            <label for="nivelActividad">Nivel de Actividad Física</label>
+            <select
+              id="nivelActividad"
+              name="nivelActividad"
+              required
+              class="input-field"
+            >
+              <option value="" disabled selected>¿Cuánto ejercicio haces?</option>
+              <option value="SEDENTARIO">Sedentario (Poco o ningún)</option>
+              <option value="LIGERO">Ligero (1-3 días/semana)</option>
+              <option value="MODERADO">Moderado (3-5 días/semana)</option>
+              <option value="ACTIVO">Activo (6-7 días/semana)</option>
+              <option value="MUY_ACTIVO">Muy Activo (Intenso)</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label for="objetivo">Objetivo Principal</label>
+            <select id="objetivo" name="objetivo" required class="input-field">
+              <option value="" disabled selected>¿Qué buscas lograr?</option>
+              <option value="GANAR_MASA">Ganar Masa Muscular</option>
+              <option value="PERDIDA_GRASA">Pérdida de Grasa</option>
+              <option value="MANTENIMIENTO">Mantenimiento</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Success & Error messages -->
+        <div
+          id="eval-success"
+          class="success-msg"
+          style="display: none; margin-top: 1rem;"
+        >
+          ¡Datos guardados con éxito! Generando plan...
+        </div>
+        <div
+          id="eval-error"
+          class="error-msg"
+          style="display: none; margin-top: 1rem;"
+        >
+        </div>
+
+        <button
+          type="submit"
+          id="submit-btn"
+          class="btn-primary large"
+          style="width: 100%; margin-top: 1.5rem;"
+        >
+          Guardar y Crear Plan Nutricional
+        </button>
+      </form>
+
+      <!-- Contenedor de Resultados -->
+      <div
+        id="results-container"
+        class="results-container"
+        style="display: none; animation: fadeIn 0.5s ease;"
+      >
+        <h3 style="text-align:center; font-size: 1.5rem; margin-top:0;">
+          Resumen de tu Perfil Nutricional
+        </h3>
+
+        <div class="summary-section" style="background: rgba(15,23,42,0.4); border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; border: 1px solid rgba(255,255,255,0.05); text-align: left;">
+            <h4 style="margin-top:0; color:var(--primary); font-size:1.1rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom:0.5rem; margin-bottom:1rem;">Tus Datos Estructurales:</h4>
+            <div style="display: flex; flex-wrap:wrap; gap: 1.5rem; font-size: 0.95rem;">
+                <div><span style="color:var(--text-muted)">Edad:</span> <strong id="sum-edad" style="color:var(--text-main)">--</strong> años</div>
+                <div><span style="color:var(--text-muted)">Sexo:</span> <strong id="sum-sexo" style="color:var(--text-main)">--</strong></div>
+                <div><span style="color:var(--text-muted)">Peso:</span> <strong id="sum-peso" style="color:var(--text-main)">--</strong> kg</div>
+                <div><span style="color:var(--text-muted)">Altura:</span> <strong id="sum-altura" style="color:var(--text-main)">--</strong> cm</div>
+                <div><span style="color:var(--text-muted)">Actividad:</span> <strong id="sum-actividad" style="color:var(--text-main)">--</strong></div>
+                <div><span style="color:var(--text-muted)">Objetivo:</span> <strong id="sum-objetivo" style="color:var(--text-main)">--</strong></div>
+            </div>
+        </div>
+
+        <h4 style="margin-top:0; margin-bottom: 1.5rem; text-align:center; color:var(--text-main); font-size:1.1rem;">Valores Calculados:</h4>
+        <div class="results-grid">
+          <div class="result-card">
+            <div class="result-icon">⚖️</div>
+            <div class="result-label">IMC</div>
+            <div class="result-value" id="res-imc">--</div>
+          </div>
+          <div class="result-card">
+            <div class="result-icon">🔥</div>
+            <div class="result-label">Calorías Diarias</div>
+            <div class="result-value" id="res-calorias">
+              -- <span style="font-size:0.9rem; opacity:0.7">kcal</span>
+            </div>
+          </div>
+          <div class="result-card">
+            <div class="result-icon">💪</div>
+            <div class="result-label">Masa Muscular</div>
+            <div class="result-value" id="res-masa">
+              -- <span style="font-size:0.9rem; opacity:0.7">kg</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="results-actions">
+          <a
+            href="/consejos"
+            class="btn-secondary"
+            style="text-align:center; text-decoration:none; padding:1rem;"
+            >Consejos generales</a
+          >
+          <a
+            href="/plan"
+            class="btn-primary"
+            style="text-align:center; text-decoration:none; padding:1rem;"
+            >Plan nutricional individual</a
+          >
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .eval-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 6rem;
+    padding-bottom: 3rem;
+  }
+
+  .eval-card {
+    max-width: 600px;
+    width: 100%;
+    backdrop-filter: blur(12px);
+    background: rgba(30, 41, 59, 0.7);
+  }
+
+  .eval-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1.25rem;
+  }
+
+  /* Responsivo para móviles */
+  @media (max-width: 600px) {
+    .form-row {
+      flex-direction: column;
+    }
+  }
+
+  .flex-1 {
+    flex: 1;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-group label {
+    font-weight: 500;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .input-field {
+    padding: 0.85rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(15, 23, 42, 0.6);
+    color: var(--text-main);
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+
+  .input-field:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+  }
+
+  option {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+  }
+
+  .error-msg {
+    color: #ef4444;
+    background-color: rgba(69, 10, 10, 0.4);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ef4444;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+
+  .success-msg {
+    color: var(--secondary);
+    background-color: rgba(6, 78, 59, 0.4);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--primary);
+    font-size: 0.95rem;
+    text-align: center;
+    box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .result-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+
+  .result-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+
+  .result-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+
+  .result-value {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+
+  .results-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+
+  .results-actions > * {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
+
+<script>
+  // Lógica user login & navbar
+  const userName = localStorage.getItem("userName");
+  const userEmail = localStorage.getItem("userEmail");
+  const loginBtn = document.getElementById("login-btn");
+
+  // Redirigir al login si no está autenticado
+  if (!userName || !userEmail) {
+    window.location.href = "/login";
+  } else if (loginBtn) {
+    loginBtn.outerHTML = `
+      <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
+        <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
+        <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
+      </div>
+    `;
+
+    document.getElementById("logout-btn")?.addEventListener("click", () => {
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userEmail");
+      window.location.href = "/";
+    });
+  }
+
+  // Enviar formulario
+  const evalForm = document.getElementById("eval-form") as HTMLFormElement;
+  const errorMsg = document.getElementById("eval-error");
+  const successMsg = document.getElementById("eval-success");
+  const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement;
+
+  if (evalForm && errorMsg && successMsg && submitBtn) {
+    evalForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      errorMsg.style.display = "none";
+      successMsg.style.display = "none";
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Guardando...";
+
+      const edadInput = document.getElementById("edad") as HTMLInputElement;
+      const sexoInput = document.getElementById("sexo") as HTMLSelectElement;
+      const pesoInput = document.getElementById("peso") as HTMLInputElement;
+      const alturaInput = document.getElementById("altura") as HTMLInputElement;
+      const actividadInput = document.getElementById("nivelActividad") as HTMLSelectElement;
+      const objetivoInput = document.getElementById("objetivo") as HTMLSelectElement;
+
+      if (
+        !edadInput ||
+        !sexoInput ||
+        !pesoInput ||
+        !alturaInput ||
+        !actividadInput ||
+        !objetivoInput
+      )
+        return;
+
+      const payload = {
+        email: userEmail,
+        edad: parseInt(edadInput.value, 10),
+        sexo: sexoInput.value,
+        peso: parseFloat(pesoInput.value),
+        altura: parseFloat(alturaInput.value),
+        nivelActividad: actividadInput.value,
+        objetivo: objetivoInput.value,
+      };
+
+      try {
+        const response = await fetch("http://localhost:8080/api/userdata", {
+          method: "POST", // Puede ser POST o PUT según el backend
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+          throw new Error("No se pudieron guardar los datos.");
+        }
+
+        const data = await response.json();
+
+        // Esconder formulario y mostrar resultados
+        evalForm.style.display = "none";
+
+        const headerText = document.querySelector(".card-header p");
+        if (headerText)
+          headerText.textContent = "Hemos analizado tus datos correctamente.";
+
+        // Inyectar datos en el resumen
+        document.getElementById("sum-edad")!.textContent = String(data.edad || "--");
+        document.getElementById("sum-sexo")!.textContent = String(data.sexo || "--");
+        document.getElementById("sum-peso")!.textContent = String(data.peso || "--");
+        document.getElementById("sum-altura")!.textContent = String(data.altura || "--");
+        document.getElementById("sum-actividad")!.textContent = String(data.nivelActividad || "--").replace("_", " ");
+        document.getElementById("sum-objetivo")!.textContent = String(data.objetivo || "--").replace("_", " ");
+
+        // Inyectar cálculos en DOM
+        const resContainer = document.getElementById("results-container");
+        if (resContainer) {
+          document.getElementById("res-imc")!.textContent = (
+            data.imc || 0
+          ).toFixed(1);
+          document.getElementById("res-calorias")!.innerHTML =
+            `${data.calorias || 0} <span style="font-size:0.9rem; opacity:0.7">kcal</span>`;
+          document.getElementById("res-masa")!.innerHTML =
+            `${(data.masaMuscular || 0).toFixed(1)} <span style="font-size:0.9rem; opacity:0.7">kg</span>`;
+
+          resContainer.style.display = "block";
+        }
+      } catch (err) {
+        console.error("Error al guardar userData:", err);
+        errorMsg.textContent =
+          "Error al intentar guardar tus datos. Inténtalo de nuevo.";
+        errorMsg.style.display = "block";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Guardar y Crear Plan Nutricional";
+      }
+    });
+  }
+</script>
