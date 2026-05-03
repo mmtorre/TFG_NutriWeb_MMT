@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +36,48 @@ public class UserDataController {
     @PostMapping
     public ResponseEntity<?> guardarDatosUsuario(@RequestBody UserDataRequest request) {
         return actualizarDatosUsuario(request);
+    }
+
+    @GetMapping("/{email}")
+    public ResponseEntity<?> obtenerDatosUsuario(@PathVariable String email) {
+        return usuarioRepository.findByEmail(email)
+                .map(usuario -> {
+                    double imc = 0;
+                    int calorias = 0;
+                    double masaMuscular = 0;
+                    
+                    if (usuario.getPeso() > 0 && usuario.getAltura() > 0 && usuario.getEdad() > 0) {
+                        imc = calculoService.calcularIMC(usuario.getPeso(), usuario.getAltura());
+                        calorias = calculoService.calcularCalorias(
+                                usuario.getSexo(),
+                                usuario.getPeso(),
+                                usuario.getAltura(),
+                                usuario.getEdad()
+                        );
+                        masaMuscular = calculoService.calcularMasaMuscular(
+                                usuario.getPeso(),
+                                usuario.getSexo()
+                        );
+                    }
+
+                    UserDataResponse response = new UserDataResponse(
+                            usuario.getId(),
+                            usuario.getNombre(),
+                            usuario.getEmail(),
+                            usuario.getEdad(),
+                            usuario.getSexo(),
+                            usuario.getPeso(),
+                            usuario.getAltura(),
+                            usuario.getNivelActividad(),
+                            usuario.getObjetivo(),
+                            imc,
+                            calorias,
+                            masaMuscular,
+                            "Datos obtenidos correctamente"
+                    );
+                    return ResponseEntity.ok(response);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping

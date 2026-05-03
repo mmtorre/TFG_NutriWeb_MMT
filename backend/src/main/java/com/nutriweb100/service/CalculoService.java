@@ -8,6 +8,7 @@ public class CalculoService {
         return peso / Math.pow(altura / 100, 2);
     }
 
+    //BMR
     public int calcularCalorias(String sexo, double peso, double altura, int edad) {
         String sexoNormalizado = normalizarSexo(sexo);
 
@@ -20,6 +21,22 @@ public class CalculoService {
         }
 
         throw new IllegalArgumentException("Sexo no valido");
+    }
+
+    public int calcularTDEE(String sexo, double peso, double altura, int edad, String actividad) {
+        int bmr = calcularCalorias(sexo, peso, altura, edad);
+
+        String actividadLimpia = actividad != null ? actividad.trim().toLowerCase() : "";
+        double factorActividad = switch (actividadLimpia) {
+            case "sedentario" -> 1.2;
+            case "ligero" -> 1.375;
+            case "moderado" -> 1.55;
+            case "activo" -> 1.725;
+            case "muy_activo" -> 1.9;
+            default -> 1.2;
+        };
+
+        return (int) (bmr * factorActividad);
     }
 
     public double calcularMasaMuscular(double peso, String sexo) {
