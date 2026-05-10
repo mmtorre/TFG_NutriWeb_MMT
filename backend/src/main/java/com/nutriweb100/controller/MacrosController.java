@@ -10,7 +10,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/macros")
-@CrossOrigin
 @RequiredArgsConstructor
 public class MacrosController {
 

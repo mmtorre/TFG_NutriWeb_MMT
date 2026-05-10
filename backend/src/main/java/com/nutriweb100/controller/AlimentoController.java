@@ -13,7 +13,6 @@ import java.util.List;
 
 @RestController //Esta clase nos devuelve un Json (se hace prueba en Postman)
 @RequestMapping("api/alimentos") //ruta
-@CrossOrigin //permite la llamada al frontend
 public class AlimentoController {
     //Conexión con BBDD
     @Autowired

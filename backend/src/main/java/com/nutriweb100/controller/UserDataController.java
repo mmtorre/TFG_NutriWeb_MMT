@@ -22,7 +22,6 @@ import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/userdata")
-@CrossOrigin
 public class UserDataController {
     @Autowired
     private UsuarioRepository usuarioRepository;

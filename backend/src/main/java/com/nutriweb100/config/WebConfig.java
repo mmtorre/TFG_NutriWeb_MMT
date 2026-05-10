@@ -15,8 +15,10 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
-                            "http://localhost:4321", // Puerto por defecto de Astro
-                            "https://tfgnutriwebmmt-production.up.railway.app" //  URL de Railway
+                            "http://localhost:4321", // url local astro
+                            "http://localhost:3000",
+                            "https://tfg-nutri.vercel.app",// url frontend production
+                            "https://tfgnutriwebmmt-production.up.railway.app" // url backend production
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
