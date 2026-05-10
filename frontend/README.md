@@ -1,46 +1,35 @@
-# Astro Starter Kit: Basics
+﻿# NutriWeb - Frontend (Astro)
 
-```sh
-npm create astro@latest -- --template basics
+Frontend en Astro. Renderiza paginas en `src/pages/` y ejecuta logica en cliente para llamar al backend Spring Boot.
+
+## Requisitos
+
+- Node.js (recomendado: 18+)
+
+## Scripts
+
+```bash
+npm install
+npm run dev      # http://localhost:4321
+npm run build
+npm run preview
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Configuracion de API
 
-## 🚀 Project Structure
+Actualmente las llamadas al backend estan hardcodeadas a `http://localhost:8080` en varios ficheros dentro de `src/pages/*.astro`.
 
-Inside of your Astro project, you'll see the following folders and files:
+Para despliegue o para cambiar el host, se recomienda:
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
+1. Introducir una variable de entorno de Astro (por ejemplo `PUBLIC_API_BASE_URL`).
+2. Sustituir las URLs hardcodeadas por `import.meta.env.PUBLIC_API_BASE_URL`.
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Paginas relevantes
 
-## 🧞 Commands
+- `/login`
+- `/evaluacion`
+- `/plan`
+- `/alimentos`
+- `/consejos`
+- `/modificar-objetivo`
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
