@@ -1,0 +1,427 @@
+---
+import Layout from "../layouts/Layout.astro";
+import "../styles/global.css";
+---
+
+<Layout>
+  <!-- Menú de Navegación -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <a
+          href="/"
+          style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:0.5rem;"
+        >
+          <span class="icon">🥑</span>
+          NutriWeb <span class="year">2026</span>
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/">Inicio</a></li>
+        <li><a href="/alimentos">Alimentos</a></li>
+        <li><a href="/plan" class="active">Plan Nutricional</a></li>
+      </ul>
+      <span id="login-btn"></span>
+    </div>
+  </nav>
+
+  <main class="container plan-container">
+    <div class="header-section">
+      <span class="badge">Tu dieta personalizada</span>
+      <h1 class="page-title">
+        Plan <span class="highlight">Nutricional</span>
+      </h1>
+      <p class="subtitle" id="plan-subtitle">
+        Calculando tu plan ideal en base a tus objetivos...
+      </p>
+    </div>
+
+    <!-- loader -->
+    <div id="loader" class="loader-container">
+      <div class="pulse"></div>
+      <p>Generando tu menú diario inteligente...</p>
+    </div>
+
+    <!-- error -->
+    <div
+      id="error-container"
+      class="error-msg"
+      style="display: none; max-width: 600px; margin: 0 auto;"
+    >
+    </div>
+
+    <div id="plan-content" class="plan-content" style="display: none;">
+      <!-- El plan se inyectará aquí vía JS -->
+    </div>
+  </main>
+</Layout>
+
+<style>
+  .plan-container {
+    padding-top: 8rem;
+    min-height: 100vh;
+  }
+
+  .header-section {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 4rem auto;
+  }
+
+  .page-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin: 0 0 1rem 0;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .loader-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    color: var(--text-muted);
+    margin: 5rem 0;
+  }
+
+  .pulse {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    animation: loader-pulse 1.5s infinite ease-in-out;
+  }
+
+  @keyframes loader-pulse {
+    0% {
+      transform: scale(0.8);
+      opacity: 0.3;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    }
+    50% {
+      transform: scale(1.1);
+      opacity: 1;
+      box-shadow: 0 0 0 15px rgba(16, 185, 129, 0);
+    }
+    100% {
+      transform: scale(0.8);
+      opacity: 0.3;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    }
+  }
+
+  .plan-content {
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+</style>
+
+<style is:global>
+  .daily-summary {
+    background: linear-gradient(
+      135deg,
+      rgba(16, 185, 129, 0.1),
+      rgba(15, 23, 42, 0.6)
+    );
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    margin-bottom: 4rem;
+  }
+
+  .summary-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+  }
+
+  .summary-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .summary-item span {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .summary-item strong {
+    font-size: 1.5rem;
+    color: var(--secondary);
+  }
+
+  .macro-dist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+  }
+
+  .meal-card {
+    background: var(--bg-card);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+  }
+
+  .meal-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .meal-card:hover {
+    transform: translateY(-8px);
+    border-color: rgba(16, 185, 129, 0.3);
+    box-shadow:
+      0 20px 40px -10px rgba(0, 0, 0, 0.5),
+      0 0 20px -5px rgba(16, 185, 129, 0.15);
+  }
+
+  .meal-card:hover::before {
+    opacity: 1;
+  }
+
+  .meal-name {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    color: var(--text-main);
+    text-transform: capitalize;
+    padding-right: 5rem;
+  }
+
+  .macro-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: auto;
+  }
+
+  .macro-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .macro-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .macro-label {
+    color: var(--text-muted);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .macro-value {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--secondary);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.5rem;
+  }
+
+  .cal-badge {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--primary);
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 1rem;
+    font-weight: 800;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+</style>
+
+<script>
+  const userName = localStorage.getItem("userName");
+  const userEmail = localStorage.getItem("userEmail");
+  const loginBtn = document.getElementById("login-btn");
+
+  if (!userName || !userEmail) {
+    window.location.href = "/login";
+  } else if (loginBtn) {
+    loginBtn.outerHTML = `
+      <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
+        <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
+        <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
+      </div>
+    `;
+
+    document.getElementById("logout-btn")?.addEventListener("click", () => {
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userEmail");
+      window.location.href = "/";
+    });
+  }
+
+  async function generatePlan() {
+    const loader = document.getElementById("loader");
+    const content = document.getElementById("plan-content");
+    const errorContainer = document.getElementById("error-container");
+    const subtitle = document.getElementById("plan-subtitle");
+
+    if (!userEmail) return;
+
+    try {
+      // 1. Obtener datos del usuario
+      const userRes = await fetch(
+        `http://localhost:8080/api/userdata/${userEmail}`,
+      );
+      if (!userRes.ok) {
+        throw new Error(
+          "No pudimos obtener tu información. Por favor, asegúrate de haber completado tu evaluación inicial.",
+        );
+      }
+      const userData = await userRes.json();
+
+      if (!userData.calorias || !userData.objetivo || !userData.peso) {
+        throw new Error(
+          "Faltan datos de perfil. Completa la evaluación primero.",
+        );
+      }
+
+      const calorias = Math.round(userData.calorias);
+      const peso = userData.peso;
+      const altura = userData.altura;
+      const edad = userData.edad;
+      const sexo = userData.sexo;
+      const actividad = userData.nivelActividad || userData.actividad; 
+      const objetivo = userData.objetivo;
+
+      if (subtitle) {
+        subtitle.textContent = `Diseñado para ${calorias} kcal y ${peso}kg con el objetivo de ${objetivo.replace(/_/g, " ").toLowerCase()}`;
+      }
+
+      // 2. Llamar al nuevo endpoint GET /api/macros con 6 parámetros
+      const macrosRes = await fetch(
+        `http://localhost:8080/api/macros?sexo=${sexo}&peso=${peso}&altura=${altura}&edad=${edad}&actividad=${actividad}&objetivo=${objetivo}`
+      );
+      if (!macrosRes.ok)
+        throw new Error("Error al conectar con la API de Macros");
+
+      const macrosMap = await macrosRes.json();
+
+      if (loader) loader.style.display = "none";
+
+      if (content) {
+        if (!macrosMap || Object.keys(macrosMap).length === 0) {
+          content.innerHTML =
+            '<p style="text-align: center; color: var(--text-muted); background: var(--bg-card); padding: 3rem; border-radius: 1.5rem; border: 1px dashed rgba(255,255,255,0.1);">No se pudo generar la distribución de macros. Intenta con otros objetivos.</p>';
+        } else {
+          let cardsHtml = "";
+          let totalCals = 0;
+          let totalProts = 0;
+          let totalCarbs = 0;
+          let totalGrasas = 0;
+
+          cardsHtml += `<div class="macro-dist-grid">`;
+
+          for (const [mealName, m] of Object.entries(macrosMap)) {
+            const macroData = m as any;
+            totalCals += macroData.calorias || 0;
+            totalProts += macroData.proteinas || 0;
+            totalCarbs += macroData.carbohidratos || 0;
+            totalGrasas += macroData.grasas || 0;
+
+            cardsHtml += `
+              <div class="meal-card">
+                <div class="cal-badge">${macroData.calorias} kcal</div>
+                <div class="meal-name">🍽️ ${mealName}</div>
+                <div class="macro-list">
+                  <div class="macro-item">
+                    <span class="macro-label">🥩 Proteínas</span>
+                    <span class="macro-value">${macroData.proteinas.toFixed(1)}g</span>
+                  </div>
+                  <div class="macro-item">
+                    <span class="macro-label">🌾 Carbos</span>
+                    <span class="macro-value">${macroData.carbohidratos.toFixed(1)}g</span>
+                  </div>
+                  <div class="macro-item">
+                    <span class="macro-label">🥑 Grasas</span>
+                    <span class="macro-value">${macroData.grasas.toFixed(1)}g</span>
+                  </div>
+                </div>
+              </div>
+            `;
+          }
+          
+          cardsHtml += `</div>`;
+
+          const summaryHtml = `
+            <div class="daily-summary">
+              <h3 style="margin-top:0; color: var(--text-main); margin-bottom: 1.5rem;">Resumen Total Diario</h3>
+              <div class="summary-grid">
+                <div class="summary-item">
+                  <span>🔥 Calorías</span>
+                  <strong>${totalCals.toFixed(0)} kcal</strong>
+                </div>
+                <div class="summary-item">
+                  <span>🥩 Proteínas</span>
+                  <strong>${totalProts.toFixed(1)} g</strong>
+                </div>
+                <div class="summary-item">
+                  <span>🌾 Carbohidratos</span>
+                  <strong>${totalCarbs.toFixed(1)} g</strong>
+                </div>
+                <div class="summary-item">
+                  <span>🥑 Grasas</span>
+                  <strong>${totalGrasas.toFixed(1)} g</strong>
+                </div>
+              </div>
+            </div>
+          `;
+
+          content.innerHTML = summaryHtml + cardsHtml;
+        }
+
+        content.style.display = "block";
+        requestAnimationFrame(() => {
+          content.style.opacity = "1";
+        });
+      }
+    } catch (error: any) {
+      console.error(error);
+      if (loader) loader.style.display = "none";
+      if (errorContainer) {
+        errorContainer.textContent =
+          error.message ||
+          "Hubo un problema al generar la distribución de macros.";
+        errorContainer.style.display = "block";
+      }
+    }
+  }
+
+  generatePlan();
+</script>
