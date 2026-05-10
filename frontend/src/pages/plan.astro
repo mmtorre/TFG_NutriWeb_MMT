@@ -271,19 +271,27 @@ import "../styles/global.css";
 
   if (!userName || !userEmail) {
     window.location.href = "/login";
-  } else if (loginBtn) {
-    loginBtn.outerHTML = `
-      <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
-        <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
-        <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
-      </div>
-    `;
+  }
 
-    document.getElementById("logout-btn")?.addEventListener("click", () => {
-      localStorage.removeItem("userName");
-      localStorage.removeItem("userEmail");
-      window.location.href = "/";
-    });
+  if (loginBtn) {
+    if (userName) {
+      loginBtn.outerHTML = `
+        <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
+          <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
+          <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
+        </div>
+      `;
+
+      document.getElementById("logout-btn")?.addEventListener("click", () => {
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userEmail");
+        window.location.href = "/";
+      });
+    } else {
+      loginBtn.innerHTML = `
+        <a href="/login" class="btn-primary" style="text-decoration: none; padding: 0.5rem 1.2rem; font-size: 0.9rem;">Ingresar</a>
+      `;
+    }
   }
 
   async function generatePlan() {

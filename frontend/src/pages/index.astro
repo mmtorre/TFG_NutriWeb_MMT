@@ -125,18 +125,25 @@ import '../styles/global.css';
   // Lógica user login
   const userName = localStorage.getItem('userName');
   const loginBtn = document.getElementById('login-btn');
-  if (userName && loginBtn) {
-    loginBtn.outerHTML = `
-      <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
-        <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
-        <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
-      </div>
-    `;
-    
-    document.getElementById('logout-btn')?.addEventListener('click', () => {
-      localStorage.removeItem('userName');
-      window.location.reload();
-    });
+  
+  if (loginBtn) {
+    if (userName) {
+      loginBtn.outerHTML = `
+        <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
+          <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
+          <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
+        </div>
+      `;
+      
+      document.getElementById('logout-btn')?.addEventListener('click', () => {
+        localStorage.removeItem('userName');
+        window.location.reload();
+      });
+    } else {
+      loginBtn.innerHTML = `
+        <a href="/login" class="btn-primary" style="text-decoration: none; padding: 0.5rem 1.2rem; font-size: 0.9rem;">Ingresar</a>
+      `;
+    }
   }
 
   // Lógica Hero CTA Button dinámico

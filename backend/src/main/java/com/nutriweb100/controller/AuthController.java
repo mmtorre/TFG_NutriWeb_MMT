@@ -7,11 +7,11 @@ import com.nutriweb100.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -19,6 +19,9 @@ public class AuthController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
@@ -28,10 +31,36 @@ public class AuthController {
         }
 
         return usuarioRepository.findByEmail(loginRequest.email())
-                .filter(usuario -> usuario.getPassword().equals(loginRequest.password()))
+                .filter(usuario -> passwordEncoder.matches(loginRequest.password(), usuario.getPassword()))
                 .<ResponseEntity<?>>map(this::buildSuccessResponse)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body("Credenciales incorrectas"));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody Map<String, String> request) {
+        String nombre = request.get("nombre");
+        String email = request.get("email");
+        String password = request.get("password");
+
+        if (nombre == null || email == null || password == null) {
+            return ResponseEntity.badRequest().body("Todos los campos son obligatorios");
+        }
+
+        if (usuarioRepository.findByEmail(email).isPresent()) {
+            return ResponseEntity.badRequest().body("El email ya está registrado");
+        }
+
+        Usuario usuario = new Usuario();
+        usuario.setNombre(nombre);
+        usuario.setEmail(email);
+        usuario.setPassword(passwordEncoder.encode(password));
+        usuario.setRol("USER");
+        usuario.setFechaRegistro(LocalDateTime.now());
+
+        usuarioRepository.save(usuario);
+
+        return ResponseEntity.ok(Map.of("message", "Usuario registrado correctamente"));
     }
 
     private ResponseEntity<LoginResponse> buildSuccessResponse(Usuario usuario) {
