@@ -442,7 +442,7 @@ import "../styles/global.css";
       };
 
       try {
-        const response = await fetch("http://localhost:8080/api/userdata", {
+        const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/userdata`, {
           method: "POST", // Puede ser POST o PUT según el backend
           headers: {
             "Content-Type": "application/json",

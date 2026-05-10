@@ -531,7 +531,7 @@ import "../styles/global.css";
     if (!userEmail) return;
 
     try {
-      const response = await fetch(`http://localhost:8080/api/userdata/${userEmail}`);
+      const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/userdata/${userEmail}`);
       if (!response.ok) throw new Error("Error al obtener datos");
       
       const data = await response.json();

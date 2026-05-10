@@ -297,7 +297,7 @@ import "../styles/global.css";
     try {
       // 1. Obtener datos del usuario
       const userRes = await fetch(
-        `http://localhost:8080/api/userdata/${userEmail}`,
+        `${import.meta.env.PUBLIC_API_URL}/api/userdata/${userEmail}`,
       );
       if (!userRes.ok) {
         throw new Error(
@@ -326,7 +326,7 @@ import "../styles/global.css";
 
       // 2. Llamar al nuevo endpoint GET /api/macros con 6 parámetros
       const macrosRes = await fetch(
-        `http://localhost:8080/api/macros?sexo=${sexo}&peso=${peso}&altura=${altura}&edad=${edad}&actividad=${actividad}&objetivo=${objetivo}`
+        `${import.meta.env.PUBLIC_API_URL}/api/macros?sexo=${sexo}&peso=${peso}&altura=${altura}&edad=${edad}&actividad=${actividad}&objetivo=${objetivo}`
       );
       if (!macrosRes.ok)
         throw new Error("Error al conectar con la API de Macros");

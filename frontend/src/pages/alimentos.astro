@@ -225,7 +225,7 @@ import '../styles/global.css';
     const errorContainer = document.getElementById('error-container');
 
     try {
-      const res = await fetch('http://localhost:8080/api/alimentos');
+      const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/alimentos`);
       if (!res.ok) throw new Error('Error al conectar con la API de Alimentos');
       
       const alimentos = await res.json();
