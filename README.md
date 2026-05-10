@@ -1,119 +1,122 @@
-# 🥗 NutriTrack - Sistema de Control Nutricional
+﻿# NutriWeb (TFG) - App de seguimiento nutricional
 
-![Estado](https://img.shields.io/badge/Estado-En_Desarrollo-green?style=flat-square)
-![Licencia](https://img.shields.io/badge/Licencia-MIT-blue?style=flat-square)
-![Versión](https://img.shields.io/badge/Versión-1.0.0-orange?style=flat-square)
+Aplicacion full-stack para evaluacion nutricional y generacion de un plan diario de macros.
 
-> **NutriTrack** es una aplicación full-stack diseñada para monitorizar tu salud. Ingresa tus datos diarios (peso, ingesta calórica, macros) y nuestro motor de análisis te devolverá resultados personalizados y proyecciones de salud.
+- Frontend: Astro (paginas + JS en cliente) en `frontend/`
+- Backend: Spring Boot (4.1.0-SNAPSHOT) + Spring MVC + Spring Data JPA en `backend/`
+- Base de datos: PostgreSQL (el proyecto usa Supabase como proveedor en desarrollo)
 
----
+## Requisitos
 
-## 🛠️ Tecnologías (Tech Stack)
+- Node.js (recomendado: 18+)
+- Java 21
+- (Opcional) Maven si no usas el wrapper (`mvnw`)
+- PostgreSQL (local o Supabase)
 
-El proyecto utiliza una arquitectura moderna y escalable:
+## Puertos por defecto
 
-### Frontend
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+- Frontend (Astro dev): `http://localhost:4321`
+- Backend (Spring Boot): `http://localhost:8080`
 
-### Backend
-![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
+## Arranque rapido (desarrollo)
 
-### Base de Datos & Nube
-![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+### 1) Backend
 
----
+1. Configura la conexion a PostgreSQL.
 
-## ✨ Funcionalidades
+   El backend lee `spring.datasource.*` desde `backend/src/main/resources/application.properties`.
 
-* 🔐 **Autenticación Segura:** Registro e inicio de sesión gestionado vía Supabase Auth.
-* 📊 **Dashboard Interactivo:** Visualización gráfica de la evolución del peso y calorías.
-* 🍎 **Calculadora Nutricional (Backend Java):** Algoritmos en Java que procesan la Tasa Metabólica Basal (TMB) y el Déficit/Superávit calórico.
-* 📅 **Histórico:** Base de datos persistente de todas las comidas y pesajes del usuario.
+   Recomendado para desarrollo:
+   - Crea variables de entorno (`SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`) o
+   - Usa un fichero no versionado tipo `application-local.properties` y ejecuta con perfil/override.
 
----
 
-## 🚀 Instalación y Configuración
 
-Sigue estos pasos para levantar el entorno de desarrollo local.
+2. Arranca el backend:
 
-### 📋 Prerrequisitos
+   Windows:
+   ```powershell
+   cd backend
+   .\mvnw.cmd spring-boot:run
+   ```
 
-* [Node.js](https://nodejs.org/) (v16+)
-* [Java JDK](https://www.oracle.com/java/technologies/downloads/) (v17+)
-* [Maven](https://maven.apache.org/) (o usar el wrapper incluido)
-* Cuenta en [Supabase](https://supabase.com/)
+   Linux/macOS:
+   ```bash
+   cd backend
+   ./mvnw spring-boot:run
+   ```
 
-### 1. Configuración de Base de Datos (Supabase)
+### 2) Frontend
 
-1.  Crea un proyecto en Supabase.
-2.  Ve al **SQL Editor** y ejecuta el script de creación de tablas (ubicado en `/database/schema.sql`).
-3.  Copia las credenciales de tu proyecto: `Project URL` y `API Key` (service_role o anon).
+1. Instala dependencias y arranca Astro:
 
-### 2. Configuración del Backend (Java)
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-1.  Entra en la carpeta del servidor:
-    ```bash
-    cd backend
+
+## Endpoints (Backend)
+
+Base URL: `http://localhost:8080`
+
+- `GET /api/alimentos`
+  - Devuelve la lista completa de alimentos.
+
+- `POST /api/auth/login`
+  - Body JSON:
+    ```json
+    {"email":"...","password":"..."}
     ```
-2.  Configura las variables de entorno en `src/main/resources/application.properties`:
-    ```properties
-    spring.datasource.url=jdbc:postgresql://<TU_HOST_SUPABASE>:5432/postgres
-    spring.datasource.username=postgres
-    spring.datasource.password=<TU_PASSWORD_DB>
-    
-    # Supabase API config (si es necesario para el cliente Java)
-    supabase.url=<TU_PROYECTO_URL>
-    supabase.key=<TU_API_KEY>
-    ```
-3.  Ejecuta la aplicación:
-    ```bash
-    ./mvnw spring-boot:run
-    ```
-prueba
-### 3. Configuración del Frontend (React)
+  - Respuesta 200: `LoginResponse` (id, nombre, email, rol, mensaje)
 
-1.  Entra en la carpeta del cliente:
-    ```bash
-    cd frontend
+- `POST /api/calculo`
+  - Body JSON (campos requeridos):
+    ```json
+    {"peso":70,"altura":175,"edad":30,"sexo":"masc"}
     ```
-2.  Instala las dependencias:
-    ```bash
-    npm install
-    ```
-3.  Crea un archivo `.env` en la raíz y añade tus claves:
-    ```env
-    VITE_SUPABASE_URL=[https://tu-proyecto.supabase.co](https://tu-proyecto.supabase.co)
-    VITE_SUPABASE_ANON_KEY=tu-clave-anonima
-    VITE_API_URL=http://localhost:8080/api
-    ```
-4.  Inicia el servidor de desarrollo:
-    ```bash
-    npm run dev
+  - Campo opcional: `email` (si existe, guarda el registro asociado al usuario)
+  - Respuesta 200: `{ "imc": ..., "calorias": ..., "masaMuscular": ... }`
+
+- `GET /api/userdata/{email}`
+  - Devuelve perfil + calculos (imc, calorias, masaMuscular) si hay datos suficientes.
+
+- `POST /api/userdata`
+- `PUT /api/userdata`
+  - Body JSON (UserDataRequest):
+    ```json
+    {
+      "email":"...",
+      "edad":30,
+      "sexo":"masc",
+      "peso":70,
+      "altura":175,
+      "nivelActividad":"moderado",
+      "objetivo":"mantenimiento"
+    }
     ```
 
----
+- `GET /api/macros?sexo=...&peso=...&altura=...&edad=...&actividad=...&objetivo=...`
+  - Devuelve un mapa con la distribucion diaria por comida (`desayuno`, `almuerzo`, `preentreno`, `cena`).
 
-## 📂 Estructura del Proyecto
+## Modelo de datos (JPA)
+
+Entidades principales en `backend/src/main/java/com/nutriweb100/model`:
+
+- `Usuario` (`usuarios`)
+- `Alimento` (`alimentos`) con `categoria` como `text[]`
+- `RegistroNutricional` (`registros_nutricionales`)
+- `RegistroAlimento` (`registro_alimentos`)
+
+En desarrollo, Hibernate esta configurado con `spring.jpa.hibernate.ddl-auto=update`, asi que crea/actualiza tablas automaticamente en la BD configurada.
+
+## Estructura del repo
 
 ```text
-root/
-├── 📂 backend/         # API REST en Java Spring Boot
-│   ├── 📂 src/main/java
-│   │   ├── 📂 controller   # Endpoints (Recibe datos de React)
-│   │   ├── 📂 service      # Lógica de nutrición
-│   │   └── 📂 model        # Entidades JPA
-│   └── 📄 pom.xml
-│
-├── 📂 frontend/        # SPA en React
-│   ├── 📂 src/
-│   │   ├── 📂 components   # Gráficos, Formularios
-│   │   ├── 📂 hooks        # Lógica de Supabase
-│   │   └── 📂 pages        # Vistas (Home, Login, Dashboard)
-│   └── 📄 package.json
-│
-└── 📂 database/        # Scripts SQL
-    └── 📄 schema.sql
+TFG_NutriWeb_MMT/
+  backend/   # Spring Boot API
+  frontend/  # Astro web
+```
+
+
