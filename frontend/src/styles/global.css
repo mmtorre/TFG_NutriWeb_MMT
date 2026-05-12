@@ -37,36 +37,43 @@
   button {
     cursor: pointer;
     font-weight: 500;
-    border-radius: 4px; /* Menos redondeado, estilo Notion */
+    border-radius: 50px; /* Estilo pill para puntas totalmente redondeadas */
     border: 1px solid var(--border);
     transition: all 0.2s ease;
     font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .btn-primary {
-    background-color: var(--text-main); /* Botón negro/oscuro */
+    background-color: var(--text-main);
     color: white;
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.5rem;
     box-shadow: none;
     border: none;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 0.95rem;
   }
 
   .btn-primary:hover {
     background-color: #000000;
-    transform: none;
   }
 
   .btn-secondary {
     background-color: white;
     color: var(--text-main);
     border: 1px solid var(--border);
-    padding: 0.5rem 1rem;
+    padding: 0.6rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-size: 0.95rem;
   }
 
   .btn-secondary:hover {
     background-color: var(--bg-sub);
     border-color: var(--text-muted);
-    color: var(--text-main);
   }
 
   .large {
@@ -271,11 +278,10 @@
   .card {
     background-color: var(--bg-main);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 2rem;
+    border-radius: 12px; /* Más redondeado para un look moderno */
+    padding: 2.5rem;
     width: 100%;
     max-width: 600px;
-    box-shadow: none;
     position: relative;
     z-index: 2;
   }
@@ -356,6 +362,46 @@
     font-size: 0.85rem;
     border-top: 1px solid var(--border);
     margin-top: 6rem;
+  }
+
+  /* === INPUTS === */
+  .input-field {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 8px; /* Redondeado suave para inputs */
+    border: 1px solid var(--border);
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .input-field:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px var(--accent);
+  }
+
+  /* === MESSAGES === */
+  .error-msg {
+    color: #eb5757;
+    background-color: #fcf1f1;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #f8d7da;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+
+  .success-msg {
+    color: #27ae60;
+    background-color: #f2faf5;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #d4edda;
+    font-size: 0.85rem;
+    text-align: center;
   }
 
   /* === RESPONSIVE DESIGN (Móvil) === */

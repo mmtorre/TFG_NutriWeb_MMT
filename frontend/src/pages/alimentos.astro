@@ -1,6 +1,6 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import '../styles/global.css';
+import Layout from "../layouts/Layout.astro";
+import "../styles/global.css";
 ---
 
 <Layout>
@@ -8,7 +8,10 @@ import '../styles/global.css';
   <nav class="navbar">
     <div class="nav-container">
       <div class="logo">
-        <a href="/" style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:0.5rem;">
+        <a
+          href="/"
+          style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:0.5rem;"
+        >
           <span class="icon">🥑</span>
           NutriWeb <span class="year">2026</span>
         </a>
@@ -24,9 +27,14 @@ import '../styles/global.css';
 
   <main class="container alimentos-container">
     <div class="header-section">
-      <span class="badge">Base de datos nutricional</span>
-      <h1 class="page-title">Catálogo de <span class="highlight">Alimentos</span></h1>
-      <p class="subtitle">Explora nuestra selección de ingredientes y conoce sus propiedades nutricionales para potenciar tu salud diaria.</p>
+      <span class="badge">Listado de alimentos</span>
+      <h1 class="page-title">
+        Catálogo de <span class="highlight">Alimentos</span>
+      </h1>
+      <p class="subtitle">
+        Explora nuestra selección de ingredientes y conoce sus propiedades
+        nutricionales para potenciar tu salud diaria.
+      </p>
     </div>
 
     <!-- loader -->
@@ -36,10 +44,15 @@ import '../styles/global.css';
     </div>
 
     <!-- error -->
-    <div id="error-container" class="error-msg" style="display: none; max-width: 600px; margin: 0 auto;"></div>
+    <div
+      id="error-container"
+      class="error-msg"
+      style="display: none; max-width: 600px; margin: 0 auto;"
+    >
+    </div>
 
     <div id="alimentos-grid" class="alimentos-grid">
-      <!-- Las tarjetas se inyectarán aquí vía JS -->
+      <!-- Las tarjetas se inyectarán aquí JS -->
     </div>
   </main>
 </Layout>
@@ -92,9 +105,18 @@ import '../styles/global.css';
   }
 
   @keyframes loader-pulse {
-    0% { transform: scale(0.9); opacity: 0.5; }
-    50% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(0.9); opacity: 0.5; }
+    0% {
+      transform: scale(0.9);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0.9);
+      opacity: 0.5;
+    }
   }
 
   .alimentos-grid {
@@ -109,8 +131,8 @@ import '../styles/global.css';
 <style is:global>
   .food-card {
     background-color: var(--bg-main);
-    border-radius: 8px;
-    padding: 1.5rem;
+    border-radius: 12px;
+    padding: 2rem;
     border: 1px solid var(--border);
     transition: background-color 0.2s ease;
     display: flex;
@@ -166,8 +188,8 @@ import '../styles/global.css';
     display: inline-block;
     background: var(--bg-sub);
     color: var(--text-main);
-    padding: 0.2rem 0.6rem;
-    border-radius: 4px;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
     font-size: 0.8rem;
     font-weight: 600;
     border: 1px solid var(--border);
@@ -178,8 +200,8 @@ import '../styles/global.css';
 
 <script>
   // Auth logic (similar to index)
-  const userName = localStorage.getItem('userName');
-  const loginBtn = document.getElementById('login-btn');
+  const userName = localStorage.getItem("userName");
+  const loginBtn = document.getElementById("login-btn");
 
   if (loginBtn) {
     if (userName) {
@@ -191,9 +213,9 @@ import '../styles/global.css';
           <button id="logout-btn" class="btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">Cerrar sesión</button>
         </div>
       `;
-      
-      document.getElementById('logout-btn')?.addEventListener('click', () => {
-        localStorage.removeItem('userName');
+
+      document.getElementById("logout-btn")?.addEventListener("click", () => {
+        localStorage.removeItem("userName");
         window.location.reload();
       });
     } else {
@@ -205,23 +227,28 @@ import '../styles/global.css';
 
   // Fetch foods
   async function fetchAlimentos() {
-    const loader = document.getElementById('loader');
-    const grid = document.getElementById('alimentos-grid');
-    const errorContainer = document.getElementById('error-container');
+    const loader = document.getElementById("loader");
+    const grid = document.getElementById("alimentos-grid");
+    const errorContainer = document.getElementById("error-container");
 
     try {
-      const res = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/alimentos`);
-      if (!res.ok) throw new Error('Error al conectar con la API de Alimentos');
-      
+      const res = await fetch(
+        `${import.meta.env.PUBLIC_API_URL}/api/alimentos`,
+      );
+      if (!res.ok) throw new Error("Error al conectar con la API de Alimentos");
+
       const alimentos = await res.json();
-      
-      if (loader) loader.style.display = 'none';
-      
+
+      if (loader) loader.style.display = "none";
+
       if (grid) {
         if (!alimentos || alimentos.length === 0) {
-          grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 1.1rem; background: var(--bg-card); padding: 3rem; border-radius: 1.5rem; border: 1px dashed rgba(255,255,255,0.1);">No hay registros de alimentos disponibles en este momento.</p>';
+          grid.innerHTML =
+            '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); font-size: 1.1rem; background: var(--bg-card); padding: 3rem; border-radius: 1.5rem; border: 1px dashed rgba(255,255,255,0.1);">No hay registros de alimentos disponibles en este momento.</p>';
         } else {
-          grid.innerHTML = alimentos.map((food: any) => `
+          grid.innerHTML = alimentos
+            .map(
+              (food: any) => `
             <div class="food-card">
               <div class="cal-badge">${food.calorias} kcal</div>
               <div class="food-name">${food.nombre}</div>
@@ -240,20 +267,23 @@ import '../styles/global.css';
                 </div>
               </div>
             </div>
-          `).join('');
+          `,
+            )
+            .join("");
         }
-        
+
         // Show with fade-in effect
         requestAnimationFrame(() => {
-          grid.style.opacity = '1';
+          grid.style.opacity = "1";
         });
       }
     } catch (error) {
       console.error(error);
-      if (loader) loader.style.display = 'none';
+      if (loader) loader.style.display = "none";
       if (errorContainer) {
-        errorContainer.textContent = 'Hubo un problema al cargar los alimentos. Asegúrate de que el servidor esté en funcionamiento.';
-        errorContainer.style.display = 'block';
+        errorContainer.textContent =
+          "Hubo un problema al cargar los alimentos. Asegúrate de que el servidor esté en funcionamiento.";
+        errorContainer.style.display = "block";
       }
     }
   }
