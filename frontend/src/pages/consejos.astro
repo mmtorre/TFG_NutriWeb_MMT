@@ -32,10 +32,9 @@ import "../styles/global.css";
 
       <!-- SECCIÓN: PÉRDIDA DE GRASA -->
       <div id="seccion-perdida" style="display: none; animation: fadeIn 0.5s ease;">
-        <div class="card-header" style="justify-content:center; margin-bottom:2rem; flex-direction:column; gap:0.5rem; text-align:center;">
-          <div class="server-icon" style="font-size:2.5rem; background:transparent; padding:0;">🔥</div>
-          <h2 style="font-size: 2rem; margin:0;">Pérdida de Grasa</h2>
-          <p style="margin:0; opacity:0.8; font-size:1.1rem;">
+        <div class="card-header" style="text-align:center; margin-bottom:2.5rem;">
+          <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-main);">Pérdida de Grasa</h2>
+          <p style="margin:0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
             Déficit calórico controlado para perder grasa preservando músculo
           </p>
         </div>
@@ -128,10 +127,9 @@ import "../styles/global.css";
 
       <!-- SECCIÓN: GANAR MASA MUSCULAR -->
       <div id="seccion-ganar" style="display: none; animation: fadeIn 0.5s ease;">
-        <div class="card-header" style="justify-content:center; margin-bottom:2rem; flex-direction:column; gap:0.5rem; text-align:center;">
-          <div class="server-icon" style="font-size:2.5rem; background:transparent; padding:0;">💪</div>
-          <h2 style="font-size: 2rem; margin:0;">Ganar Masa Muscular</h2>
-          <p style="margin:0; opacity:0.8; font-size:1.1rem;">
+        <div class="card-header" style="text-align:center; margin-bottom:2.5rem;">
+          <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-main);">Ganar Masa Muscular</h2>
+          <p style="margin:0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
             Superávit calórico moderado con alta proteína para maximizar la síntesis muscular
           </p>
         </div>
@@ -224,10 +222,9 @@ import "../styles/global.css";
 
       <!-- SECCIÓN: MANTENIMIENTO -->
       <div id="seccion-mantenimiento" style="display: none; animation: fadeIn 0.5s ease;">
-        <div class="card-header" style="justify-content:center; margin-bottom:2rem; flex-direction:column; gap:0.5rem; text-align:center;">
-          <div class="server-icon" style="font-size:2.5rem; background:transparent; padding:0;">⚖️</div>
-          <h2 style="font-size: 2rem; margin:0;">Mantenimiento</h2>
-          <p style="margin:0; opacity:0.8; font-size:1.1rem;">
+        <div class="card-header" style="text-align:center; margin-bottom:2.5rem;">
+          <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-main);">Mantenimiento</h2>
+          <p style="margin:0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
             Equilibrio calórico para sostener el peso y la composición corporal actuales
           </p>
         </div>
@@ -335,76 +332,74 @@ import "../styles/global.css";
     align-items: center;
     min-height: 100vh;
     padding-top: 6rem;
-    padding-bottom: 3rem;
+    padding-bottom: 4rem;
+    background-color: var(--bg-sub);
   }
 
   .consejos-card {
     max-width: 800px;
     width: 100%;
-    backdrop-filter: blur(12px);
-    background: rgba(30, 41, 59, 0.7);
-    padding: 2.5rem;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 3rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
   }
 
   .summary-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
-    margin: 2rem 0;
+    margin: 2.5rem 0;
+  }
+
+  @media (max-width: 768px) {
+    .summary-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .summary-card {
-    background: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.2);
-    border-radius: 1rem;
+    background-color: var(--bg-sub);
+    border: 1px solid var(--border);
+    border-radius: 8px;
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    transition: transform 0.3s ease;
-  }
-
-  .summary-card:hover {
-    transform: translateY(-5px);
   }
 
   .summary-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
   }
 
   .summary-card strong {
-    font-size: 1.5rem;
-    color: var(--primary);
+    font-size: 1.25rem;
+    color: var(--text-main);
     margin-bottom: 0.25rem;
+    font-weight: 700;
   }
 
   .summary-label {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   .content-section {
-    margin-top: 2.5rem;
-    background: rgba(15, 23, 42, 0.4);
-    padding: 1.5rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 3rem;
   }
 
   .section-title {
-    font-size: 1.3rem;
-    margin-top: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
     margin-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 0.5rem;
     color: var(--text-main);
-  }
-
-  .text-danger {
-    color: #ef4444;
-    border-bottom-color: rgba(239, 68, 68, 0.3);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.75rem;
   }
 
   .claves-list {
@@ -413,89 +408,93 @@ import "../styles/global.css";
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1.5rem;
   }
 
   .claves-list li {
     display: flex;
-    gap: 1rem;
-    align-items: flex-start;
+    gap: 1.25rem;
   }
 
   .clave-icon {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
     flex-shrink: 0;
   }
 
   .claves-list strong {
-    color: var(--primary);
+    color: var(--text-main);
+    font-weight: 600;
+  }
+
+  .claves-list div {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
   }
 
   .tags-container {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .food-tag {
-    background: rgba(16, 185, 129, 0.15);
-    color: #34d399;
-    padding: 0.5rem 1rem;
-    border-radius: 2rem;
-    font-size: 0.95rem;
+    background-color: var(--bg-sub);
+    color: var(--text-main);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
     font-weight: 500;
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    border: 1px solid var(--border);
   }
 
   .avoid-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 1rem;
   }
 
+  @media (max-width: 600px) {
+    .avoid-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   .avoid-card {
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.2);
-    border-radius: 0.75rem;
-    padding: 1rem;
+    background-color: #fff9f9;
+    border: 1px solid #fee2e2;
+    border-radius: 8px;
+    padding: 1.25rem;
     display: flex;
     gap: 1rem;
     align-items: center;
   }
 
-  .avoid-card.border-danger {
-    border-color: rgba(239, 68, 68, 0.6);
-    background: rgba(239, 68, 68, 0.15);
-  }
-
-  .avoid-icon {
-    font-size: 1.5rem;
-    flex-shrink: 0;
-  }
-
   .avoid-card p {
     margin: 0;
-    font-size: 0.95rem;
-    color: #fca5a5;
-  }
-
-  .avoid-card strong {
-    color: #ef4444;
+    font-size: 0.9rem;
+    color: #b91c1c;
+    line-height: 1.5;
   }
 
   .results-actions {
     display: flex;
     gap: 1rem;
-    flex-wrap: wrap;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
   }
 
   .results-actions > * {
     flex: 1;
-    min-width: 200px;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.75rem;
+    font-size: 0.9rem;
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(8px); }
     to { opacity: 1; transform: translateY(0); }
   }
 </style>
@@ -509,9 +508,11 @@ import "../styles/global.css";
     window.location.href = "/login";
   } else if (loginBtn) {
     loginBtn.outerHTML = `
-      <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
-        <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
-        <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
+      <div class="user-menu" style="display: flex; align-items: center; gap: 0.75rem;">
+        <span class="user-greeting" style="font-weight: 500; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
+          <span style="opacity: 0.6;">👋</span> ${userName}
+        </span>
+        <button id="logout-btn" class="btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">Cerrar sesión</button>
       </div>
     `;
 

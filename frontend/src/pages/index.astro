@@ -69,38 +69,36 @@ import '../styles/global.css';
     margin: 0 auto;
   }
   .intro-text {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     color: var(--text-muted);
     line-height: 1.6;
-    margin: 0 auto 2.5rem auto;
+    margin: 0 auto 3rem auto;
     max-width: 700px;
   }
   .services-list {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 2rem;
     text-align: left;
-    background: rgba(15, 23, 42, 0.4);
-    padding: 2.5rem;
-    border-radius: 1.5rem;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+    background: var(--bg-sub);
+    padding: 2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
     max-width: 800px;
     margin: 0 auto;
   }
   .service-item {
     display: flex;
     align-items: flex-start;
-    gap: 1.2rem;
+    gap: 1.5rem;
   }
   .service-icon {
-    font-size: 1.5rem;
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--primary);
-    padding: 0.8rem;
-    border-radius: 1rem;
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    font-size: 1.2rem;
+    background: white;
+    color: var(--text-main);
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid var(--border);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -108,15 +106,16 @@ import '../styles/global.css';
   }
   .service-item p {
     margin: 0;
-    font-size: 1.05rem;
+    font-size: 0.95rem;
     color: var(--text-muted);
     line-height: 1.6;
   }
   .service-item strong {
     color: var(--text-main);
     display: block;
-    margin-bottom: 0.3rem;
-    font-size: 1.15rem;
+    margin-bottom: 0.2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
   }
 </style>
 
@@ -129,9 +128,11 @@ import '../styles/global.css';
   if (loginBtn) {
     if (userName) {
       loginBtn.outerHTML = `
-        <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
-          <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
-          <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
+        <div class="user-menu" style="display: flex; align-items: center; gap: 0.75rem;">
+          <span class="user-greeting" style="font-weight: 500; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
+            <span style="opacity: 0.6;">👋</span> ${userName}
+          </span>
+          <button id="logout-btn" class="btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">Cerrar sesión</button>
         </div>
       `;
       
@@ -141,7 +142,7 @@ import '../styles/global.css';
       });
     } else {
       loginBtn.innerHTML = `
-        <a href="/login" class="btn-primary" style="text-decoration: none; padding: 0.5rem 1.2rem; font-size: 0.9rem;">Ingresar</a>
+        <a href="/login" class="btn-primary" style="text-decoration: none; padding: 0.4rem 1rem; font-size: 0.85rem;">Ingresar</a>
       `;
     }
   }

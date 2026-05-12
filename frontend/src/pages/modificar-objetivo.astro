@@ -26,18 +26,9 @@ import "../styles/global.css";
 
   <main class="container eval-container">
     <div class="card eval-card">
-      <div
-        class="card-header"
-        style="justify-content:center; margin-bottom:2rem; flex-direction:column; gap:0.5rem; text-align:center;"
-      >
-        <div
-          class="server-icon"
-          style="font-size:2.5rem; background:transparent; padding:0;"
-        >
-          ✏️
-        </div>
-        <h2 style="font-size: 2rem; margin:0;">Modificar Objetivo</h2>
-        <p style="margin:0; opacity:0.8;">
+      <div class="card-header" style="text-align:center; margin-bottom:2.5rem;">
+        <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-main);">Modificar Objetivo</h2>
+        <p style="margin:0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
           Actualiza tu peso, actividad o meta para recalcular tu plan.
         </p>
       </div>
@@ -135,56 +126,30 @@ import "../styles/global.css";
       </div>
 
       <!-- Contenedor de Resultados -->
-      <div
-        id="results-container"
-        class="results-container"
-        style="display: none; animation: fadeIn 0.5s ease;"
-      >
-        <h3 style="text-align:center; font-size: 1.5rem; margin-top:0;">
+      <div id="results-container" class="results-container" style="display: none;">
+        <h3 style="text-align:center; font-size: 1.25rem; margin-bottom: 2rem; font-weight: 600;">
           Nuevos Valores Calculados
         </h3>
 
         <div class="results-grid">
           <div class="result-card">
-            <div class="result-icon">⚖️</div>
             <div class="result-label">IMC</div>
             <div class="result-value" id="res-imc">--</div>
           </div>
           <div class="result-card">
-            <div class="result-icon">🔥</div>
             <div class="result-label">Calorías Diarias</div>
-            <div class="result-value" id="res-calorias">
-              -- <span style="font-size:0.9rem; opacity:0.7">kcal</span>
-            </div>
+            <div class="result-value" id="res-calorias">--</div>
           </div>
           <div class="result-card">
-            <div class="result-icon">💪</div>
             <div class="result-label">Masa Muscular</div>
-            <div class="result-value" id="res-masa">
-              -- <span style="font-size:0.9rem; opacity:0.7">kg</span>
-            </div>
+            <div class="result-value" id="res-masa">--</div>
           </div>
         </div>
 
         <div class="results-actions">
-          <a
-            href="/"
-            class="btn-secondary"
-            style="text-align:center; text-decoration:none; padding:1rem;"
-            >Volver al Inicio</a
-          >
-          <a
-            href="/consejos"
-            class="btn-secondary"
-            style="text-align:center; text-decoration:none; padding:1rem;"
-            >Consejos generales</a
-          >
-          <a
-            href="/plan"
-            class="btn-primary"
-            style="text-align:center; text-decoration:none; padding:1rem;"
-            >Ver Plan Nutricional</a
-          >
+          <a href="/" class="btn-secondary">Volver al Inicio</a>
+          <a href="/consejos" class="btn-secondary">Consejos generales</a>
+          <a href="/plan" class="btn-primary">Ver Plan Nutricional</a>
         </div>
       </div>
     </div>
@@ -198,14 +163,18 @@ import "../styles/global.css";
     align-items: center;
     min-height: 100vh;
     padding-top: 6rem;
-    padding-bottom: 3rem;
+    padding-bottom: 4rem;
+    background-color: var(--bg-sub);
   }
 
   .eval-card {
     max-width: 600px;
     width: 100%;
-    backdrop-filter: blur(12px);
-    background: rgba(30, 41, 59, 0.7);
+    background-color: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 2.5rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
   }
 
   .eval-form {
@@ -222,6 +191,7 @@ import "../styles/global.css";
   @media (max-width: 600px) {
     .form-row {
       flex-direction: column;
+      gap: 1.25rem;
     }
   }
 
@@ -232,117 +202,100 @@ import "../styles/global.css";
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.4rem;
   }
 
   .form-group label {
     font-weight: 500;
-    color: var(--text-muted);
-    font-size: 0.95rem;
+    color: var(--text-main);
+    font-size: 0.85rem;
   }
 
   .input-field {
-    padding: 0.85rem 1rem;
-    border-radius: 0.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background-color: rgba(15, 23, 42, 0.6);
+    padding: 0.6rem 0.75rem;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background-color: var(--bg-main);
     color: var(--text-main);
-    font-size: 1rem;
+    font-size: 0.95rem;
     outline: none;
-    transition: all 0.3s ease;
+    transition: border-color 0.2s ease;
   }
 
   .input-field:focus {
     border-color: var(--primary);
-    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
-  }
-
-  option {
-    background-color: var(--bg-dark);
-    color: var(--text-main);
+    box-shadow: 0 0 0 2px var(--accent);
   }
 
   .error-msg {
-    color: #ef4444;
-    background-color: rgba(69, 10, 10, 0.4);
-    padding: 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid #ef4444;
-    font-size: 0.95rem;
+    color: #eb5757;
+    background-color: #fcf1f1;
+    padding: 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #f8d7da;
+    font-size: 0.85rem;
     text-align: center;
   }
 
   .success-msg {
-    color: var(--secondary);
-    background-color: rgba(6, 78, 59, 0.4);
-    padding: 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--primary);
-    font-size: 0.95rem;
+    color: #27ae60;
+    background-color: #f2faf5;
+    padding: 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #d4edda;
+    font-size: 0.85rem;
     text-align: center;
-    box-shadow: 0 0 15px rgba(16, 185, 129, 0.1);
+  }
+
+  .results-container {
+    animation: fadeIn 0.4s ease;
   }
 
   .results-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
   }
 
   .result-card {
-    background: rgba(15, 23, 42, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 1rem;
-    padding: 1.5rem;
+    background-color: var(--bg-main);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
     text-align: center;
-    transition: transform 0.3s ease;
-  }
-
-  .result-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(16, 185, 129, 0.3);
-  }
-
-  .result-icon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
   }
 
   .result-label {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
     color: var(--text-muted);
-    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     margin-bottom: 0.5rem;
   }
 
   .result-value {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: var(--primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
   }
 
   .results-actions {
     display: flex;
     gap: 1rem;
-    flex-wrap: wrap;
-    margin-top: 1rem;
   }
 
   .results-actions > * {
     flex: 1;
-    min-width: 200px;
+    text-align: center;
+    text-decoration: none;
+    padding: 0.75rem;
+    font-size: 0.9rem;
   }
 
   @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 
@@ -355,9 +308,11 @@ import "../styles/global.css";
     window.location.href = "/login";
   } else if (loginBtn) {
     loginBtn.outerHTML = `
-      <div class="user-menu" style="display: flex; align-items: center; gap: 1rem;">
-        <span class="user-greeting" style="font-weight: 600; color: var(--primary); display: flex; align-items: center; gap: 0.5rem; font-size: 1.1rem;">👋 Hola, ${userName}</span>
-        <button id="logout-btn" class="btn-secondary" style="padding: 0.4rem 1rem; font-size: 0.9rem; border-color: rgba(255,255,255,0.2);">Cerrar sesión</button>
+      <div class="user-menu" style="display: flex; align-items: center; gap: 0.75rem;">
+        <span class="user-greeting" style="font-weight: 500; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
+          <span style="opacity: 0.6;">👋</span> ${userName}
+        </span>
+        <button id="logout-btn" class="btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">Cerrar sesión</button>
       </div>
     `;
 
@@ -451,8 +406,8 @@ import "../styles/global.css";
         const resContainer = document.getElementById("results-container");
         if (resContainer) {
           document.getElementById("res-imc")!.textContent = (data.imc || 0).toFixed(1);
-          document.getElementById("res-calorias")!.innerHTML = `${data.calorias || 0} <span style="font-size:0.9rem; opacity:0.7">kcal</span>`;
-          document.getElementById("res-masa")!.innerHTML = `${(data.masaMuscular || 0).toFixed(1)} <span style="font-size:0.9rem; opacity:0.7">kg</span>`;
+          document.getElementById("res-calorias")!.textContent = `${data.calorias || 0} kcal`;
+          document.getElementById("res-masa")!.textContent = `${(data.masaMuscular || 0).toFixed(1)} kg`;
 
           resContainer.style.display = "block";
         }
