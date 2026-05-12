@@ -28,8 +28,14 @@ import "../styles/global.css";
   <main class="container eval-container">
     <div class="card eval-card">
       <div class="card-header" style="text-align:center; margin-bottom:2.5rem;">
-        <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-main);">Evaluación Inicial</h2>
-        <p style="margin:0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
+        <h2
+          style="font-size: 1.75rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-main);"
+        >
+          Evaluación Inicial
+        </h2>
+        <p
+          style="margin:0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;"
+        >
           Ingresa tus datos físicos para generar tu plan nutricional a medida.
         </p>
       </div>
@@ -102,7 +108,9 @@ import "../styles/global.css";
               required
               class="input-field"
             >
-              <option value="" disabled selected>¿Cuánto ejercicio haces?</option>
+              <option value="" disabled selected
+                >¿Cuánto ejercicio haces?</option
+              >
               <option value="SEDENTARIO">Sedentario (Poco o ningún)</option>
               <option value="LIGERO">Ligero (1-3 días/semana)</option>
               <option value="MODERADO">Moderado (3-5 días/semana)</option>
@@ -147,21 +155,45 @@ import "../styles/global.css";
       </form>
 
       <!-- Contenedor de Resultados -->
-      <div id="results-container" class="results-container" style="display: none;">
-        <h3 style="text-align:center; font-size: 1.25rem; margin-bottom: 2rem; font-weight: 600;">
+      <div
+        id="results-container"
+        class="results-container"
+        style="display: none;"
+      >
+        <h3
+          style="text-align:center; font-size: 1.25rem; margin-bottom: 2rem; font-weight: 600;"
+        >
           Resumen de tu Perfil Nutricional
         </h3>
 
         <div class="summary-section">
-            <h4 class="summary-title">Tus Datos Estructurales:</h4>
-            <div class="summary-data">
-                <div class="data-item"><span>Edad:</span> <strong id="sum-edad">--</strong> años</div>
-                <div class="data-item"><span>Sexo:</span> <strong id="sum-sexo">--</strong></div>
-                <div class="data-item"><span>Peso:</span> <strong id="sum-peso">--</strong> kg</div>
-                <div class="data-item"><span>Altura:</span> <strong id="sum-altura">--</strong> cm</div>
-                <div class="data-item"><span>Actividad:</span> <strong id="sum-actividad">--</strong></div>
-                <div class="data-item"><span>Objetivo:</span> <strong id="sum-objetivo">--</strong></div>
+          <h4 class="summary-title">Tus Datos Estructurales:</h4>
+          <div class="summary-data">
+            <div class="data-item">
+              <span>Edad:</span>
+              <strong id="sum-edad">--</strong> años
             </div>
+            <div class="data-item">
+              <span>Sexo:</span>
+              <strong id="sum-sexo">--</strong>
+            </div>
+            <div class="data-item">
+              <span>Peso:</span>
+              <strong id="sum-peso">--</strong> kg
+            </div>
+            <div class="data-item">
+              <span>Altura:</span>
+              <strong id="sum-altura">--</strong> cm
+            </div>
+            <div class="data-item">
+              <span>Actividad:</span>
+              <strong id="sum-actividad">--</strong>
+            </div>
+            <div class="data-item">
+              <span>Objetivo:</span>
+              <strong id="sum-objetivo">--</strong>
+            </div>
+          </div>
         </div>
 
         <div class="results-grid">
@@ -310,8 +342,14 @@ import "../styles/global.css";
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 
@@ -347,6 +385,69 @@ import "../styles/global.css";
   const successMsg = document.getElementById("eval-success");
   const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement;
 
+  // Cargar datos existentes al iniciar
+  window.addEventListener("DOMContentLoaded", async () => {
+    if (!userEmail) return;
+
+    try {
+      const response = await fetch(
+        `${import.meta.env.PUBLIC_API_URL}/api/userdata/${userEmail}`,
+      );
+      if (response.ok) {
+        const data = await response.json();
+        if (data && data.peso > 0) {
+          // Si ya tiene datos, mostrar directamente los resultados
+          showResults(data);
+        }
+      }
+    } catch (err) {
+      console.error("Error al cargar datos existentes:", err);
+    }
+  });
+
+  function showResults(data: any) {
+    if (evalForm) evalForm.style.display = "none";
+
+    const headerText = document.querySelector(".card-header p");
+    if (headerText)
+      headerText.textContent =
+        "Consulta tus últimos cálculos y parámetros físicos.";
+
+    // Inyectar datos en el resumen
+    document.getElementById("sum-edad")!.textContent = String(
+      data.edad || "--",
+    );
+    document.getElementById("sum-sexo")!.textContent = String(
+      data.sexo || "--",
+    );
+    document.getElementById("sum-peso")!.textContent = String(
+      data.peso || "--",
+    );
+    document.getElementById("sum-altura")!.textContent = String(
+      data.altura || "--",
+    );
+    document.getElementById("sum-actividad")!.textContent = String(
+      data.nivelActividad || "--",
+    ).replace("_", " ");
+    document.getElementById("sum-objetivo")!.textContent = String(
+      data.objetivo || "--",
+    ).replace("_", " ");
+
+    // Inyectar cálculos en DOM
+    const resContainer = document.getElementById("results-container");
+    if (resContainer) {
+      document.getElementById("res-imc")!.textContent = (data.imc || 0).toFixed(
+        1,
+      );
+      document.getElementById("res-calorias")!.textContent =
+        `${data.calorias || 0} kcal`;
+      document.getElementById("res-masa")!.textContent =
+        `${(data.masaMuscular || 0).toFixed(1)} kg`;
+
+      resContainer.style.display = "block";
+    }
+  }
+
   if (evalForm && errorMsg && successMsg && submitBtn) {
     evalForm.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -360,8 +461,12 @@ import "../styles/global.css";
       const sexoInput = document.getElementById("sexo") as HTMLSelectElement;
       const pesoInput = document.getElementById("peso") as HTMLInputElement;
       const alturaInput = document.getElementById("altura") as HTMLInputElement;
-      const actividadInput = document.getElementById("nivelActividad") as HTMLSelectElement;
-      const objetivoInput = document.getElementById("objetivo") as HTMLSelectElement;
+      const actividadInput = document.getElementById(
+        "nivelActividad",
+      ) as HTMLSelectElement;
+      const objetivoInput = document.getElementById(
+        "objetivo",
+      ) as HTMLSelectElement;
 
       if (
         !edadInput ||
@@ -384,13 +489,16 @@ import "../styles/global.css";
       };
 
       try {
-        const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/userdata`, {
-          method: "POST", // Puede ser POST o PUT según el backend
-          headers: {
-            "Content-Type": "application/json",
+        const response = await fetch(
+          `${import.meta.env.PUBLIC_API_URL}/api/userdata`,
+          {
+            method: "POST", // Puede ser POST o PUT según el backend
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
           },
-          body: JSON.stringify(payload),
-        });
+        );
 
         if (!response.ok) {
           throw new Error("No se pudieron guardar los datos.");
@@ -406,12 +514,24 @@ import "../styles/global.css";
           headerText.textContent = "Hemos analizado tus datos correctamente.";
 
         // Inyectar datos en el resumen
-        document.getElementById("sum-edad")!.textContent = String(data.edad || "--");
-        document.getElementById("sum-sexo")!.textContent = String(data.sexo || "--");
-        document.getElementById("sum-peso")!.textContent = String(data.peso || "--");
-        document.getElementById("sum-altura")!.textContent = String(data.altura || "--");
-        document.getElementById("sum-actividad")!.textContent = String(data.nivelActividad || "--").replace("_", " ");
-        document.getElementById("sum-objetivo")!.textContent = String(data.objetivo || "--").replace("_", " ");
+        document.getElementById("sum-edad")!.textContent = String(
+          data.edad || "--",
+        );
+        document.getElementById("sum-sexo")!.textContent = String(
+          data.sexo || "--",
+        );
+        document.getElementById("sum-peso")!.textContent = String(
+          data.peso || "--",
+        );
+        document.getElementById("sum-altura")!.textContent = String(
+          data.altura || "--",
+        );
+        document.getElementById("sum-actividad")!.textContent = String(
+          data.nivelActividad || "--",
+        ).replace("_", " ");
+        document.getElementById("sum-objetivo")!.textContent = String(
+          data.objetivo || "--",
+        ).replace("_", " ");
 
         // Inyectar cálculos en DOM
         const resContainer = document.getElementById("results-container");
