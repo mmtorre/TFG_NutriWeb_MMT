@@ -353,6 +353,24 @@ import "../styles/global.css";
     gap: 1rem;
   }
 
+  @media (max-width: 600px) {
+    .eval-container {
+      padding: 6rem 1rem 4rem 1rem;
+    }
+    .eval-card {
+      padding: 1.5rem;
+    }
+    .results-grid {
+      grid-template-columns: 1fr;
+    }
+    .results-actions {
+      flex-direction: column;
+    }
+    .result-card {
+      padding: 1rem;
+    }
+  }
+
   @keyframes fadeIn {
     from {
       opacity: 0;

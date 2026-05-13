@@ -122,6 +122,34 @@ import "../styles/global.css";
     opacity: 0;
     transition: opacity 0.4s ease;
   }
+
+  @media (max-width: 768px) {
+    .plan-container {
+      padding-top: 6rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .page-title {
+      font-size: 2.2rem;
+    }
+    .header-section {
+      margin-bottom: 2rem;
+    }
+    .daily-summary {
+      padding: 1.5rem;
+    }
+    .summary-grid {
+      gap: 1rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .summary-item strong {
+      font-size: 1.2rem;
+    }
+    .macro-dist-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 
 <style is:global>

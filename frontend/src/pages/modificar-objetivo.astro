@@ -27,8 +27,14 @@ import "../styles/global.css";
   <main class="container eval-container">
     <div class="card eval-card">
       <div class="card-header" style="text-align:center; margin-bottom:2.5rem;">
-        <h2 style="font-size: 1.75rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-main);">Modificar Objetivo</h2>
-        <p style="margin:0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;">
+        <h2
+          style="font-size: 1.75rem; margin-bottom: 0.5rem; font-weight: 700; color: var(--text-main);"
+        >
+          Modificar Objetivo
+        </h2>
+        <p
+          style="margin:0; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5;"
+        >
           Actualiza tu peso, actividad o meta para recalcular tu plan.
         </p>
       </div>
@@ -126,8 +132,14 @@ import "../styles/global.css";
       </div>
 
       <!-- Contenedor de Resultados -->
-      <div id="results-container" class="results-container" style="display: none;">
-        <h3 style="text-align:center; font-size: 1.25rem; margin-bottom: 2rem; font-weight: 600;">
+      <div
+        id="results-container"
+        class="results-container"
+        style="display: none;"
+      >
+        <h3
+          style="text-align:center; font-size: 1.25rem; margin-bottom: 2rem; font-weight: 600;"
+        >
           Nuevos Valores Calculados
         </h3>
 
@@ -256,8 +268,14 @@ import "../styles/global.css";
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 
@@ -296,20 +314,25 @@ import "../styles/global.css";
     if (!userEmail) return;
 
     try {
-      const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/userdata/${userEmail}`);
+      const response = await fetch(
+        `${import.meta.env.PUBLIC_API_URL}/api/userdata/${userEmail}`,
+      );
       if (!response.ok) throw new Error("No se pudo obtener la información.");
-      
+
       const data = await response.json();
-      
+
       if (data && data.peso > 0) {
         // Pre-rellenar formulario
         (document.getElementById("edad") as HTMLInputElement).value = data.edad;
         (document.getElementById("sexo") as HTMLInputElement).value = data.sexo;
         (document.getElementById("peso") as HTMLInputElement).value = data.peso;
-        (document.getElementById("altura") as HTMLInputElement).value = data.altura;
-        (document.getElementById("nivelActividad") as HTMLSelectElement).value = data.nivelActividad;
-        (document.getElementById("objetivo") as HTMLSelectElement).value = data.objetivo;
-        
+        (document.getElementById("altura") as HTMLInputElement).value =
+          data.altura;
+        (document.getElementById("nivelActividad") as HTMLSelectElement).value =
+          data.nivelActividad;
+        (document.getElementById("objetivo") as HTMLSelectElement).value =
+          data.objetivo;
+
         if (loadingState) loadingState.style.display = "none";
         if (modForm) modForm.style.display = "flex";
       } else {
@@ -318,7 +341,9 @@ import "../styles/global.css";
       }
     } catch (err) {
       console.error(err);
-      if (loadingState) loadingState.innerHTML = "<p style='color:#ef4444'>Error al cargar tus datos. Vuelve al inicio y reintenta.</p>";
+      if (loadingState)
+        loadingState.innerHTML =
+          "<p style='color:#ef4444'>Error al cargar tus datos. Vuelve al inicio y reintenta.</p>";
     }
   });
 
@@ -334,22 +359,35 @@ import "../styles/global.css";
 
       const payload = {
         email: userEmail,
-        edad: parseInt((document.getElementById("edad") as HTMLInputElement).value, 10),
+        edad: parseInt(
+          (document.getElementById("edad") as HTMLInputElement).value,
+          10,
+        ),
         sexo: (document.getElementById("sexo") as HTMLInputElement).value,
-        peso: parseFloat((document.getElementById("peso") as HTMLInputElement).value),
-        altura: parseFloat((document.getElementById("altura") as HTMLInputElement).value),
-        nivelActividad: (document.getElementById("nivelActividad") as HTMLSelectElement).value,
-        objetivo: (document.getElementById("objetivo") as HTMLSelectElement).value,
+        peso: parseFloat(
+          (document.getElementById("peso") as HTMLInputElement).value,
+        ),
+        altura: parseFloat(
+          (document.getElementById("altura") as HTMLInputElement).value,
+        ),
+        nivelActividad: (
+          document.getElementById("nivelActividad") as HTMLSelectElement
+        ).value,
+        objetivo: (document.getElementById("objetivo") as HTMLSelectElement)
+          .value,
       };
 
       try {
-        const response = await fetch(`${import.meta.env.PUBLIC_API_URL}/api/userdata`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await fetch(
+          `${import.meta.env.PUBLIC_API_URL}/api/userdata`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
           },
-          body: JSON.stringify(payload),
-        });
+        );
 
         if (!response.ok) {
           throw new Error("No se pudieron actualizar los datos.");
@@ -367,15 +405,20 @@ import "../styles/global.css";
         // Inyectar cálculos en DOM
         const resContainer = document.getElementById("results-container");
         if (resContainer) {
-          document.getElementById("res-imc")!.textContent = (data.imc || 0).toFixed(1);
-          document.getElementById("res-calorias")!.textContent = `${data.calorias || 0} kcal`;
-          document.getElementById("res-masa")!.textContent = `${(data.masaMuscular || 0).toFixed(1)} kg`;
+          document.getElementById("res-imc")!.textContent = (
+            data.imc || 0
+          ).toFixed(1);
+          document.getElementById("res-calorias")!.textContent =
+            `${data.calorias || 0} kcal`;
+          document.getElementById("res-masa")!.textContent =
+            `${(data.masaMuscular || 0).toFixed(1)} kg`;
 
           resContainer.style.display = "block";
         }
       } catch (err) {
         console.error("Error al guardar userData:", err);
-        errorMsg.textContent = "Error al intentar actualizar tus datos. Inténtalo de nuevo.";
+        errorMsg.textContent =
+          "Error al intentar actualizar tus datos. Inténtalo de nuevo.";
         errorMsg.style.display = "block";
         submitBtn.disabled = false;
         submitBtn.textContent = "Guardar Cambios";
