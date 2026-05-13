@@ -17,6 +17,28 @@ import "../styles/global.css";
 		/>
 	</head>
 	<body>
+		<!-- Loader Global -->
+		<div id="global-loader" class="global-loader">
+			<div class="loader-content">
+				<div class="loader-avocado">🥑</div>
+				<p>Cargando NutriWeb...</p>
+				<div class="loader-spinner"></div>
+			</div>
+		</div>
+
 		<slot />
+
+		<script is:inline>
+			// Ocultar el loader cuando todo esté listo
+			window.addEventListener('load', () => {
+				const loader = document.getElementById('global-loader');
+				if (loader) {
+					loader.style.opacity = '0';
+					setTimeout(() => {
+						loader.style.display = 'none';
+					}, 400); // Dar tiempo a la transición de opacidad
+				}
+			});
+		</script>
 	</body>
 </html>

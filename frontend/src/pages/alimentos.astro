@@ -148,21 +148,22 @@ import "../styles/global.css";
 
 <style is:global>
   .food-card {
-    background-color: var(--bg-main);
+    background-color: #f4f9ff;
     border-radius: 12px;
     padding: 2rem;
-    border: 1px solid var(--border);
+    border: 1px solid #d0e7ff;
     transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
     position: relative;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    box-shadow: 0 4px 12px rgba(35, 131, 226, 0.04);
   }
 
   .food-card:hover {
-    background-color: var(--bg-sub);
+    background-color: #ebf5ff;
+    border-color: var(--primary);
     transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 8px 20px rgba(35, 131, 226, 0.08);
   }
 
   .food-name {
@@ -184,7 +185,7 @@ import "../styles/global.css";
     justify-content: space-between;
     align-items: center;
     padding: 0.4rem 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #d0e7ff;
   }
 
   .macro-item:last-child {
@@ -207,13 +208,13 @@ import "../styles/global.css";
 
   .cal-badge {
     display: inline-block;
-    background: var(--accent);
+    background: white;
     color: var(--primary);
     padding: 0.25rem 0.75rem;
     border-radius: 50px;
     font-size: 0.8rem;
     font-weight: 600;
-    border: 1px solid var(--border);
+    border: 1px solid #d0e7ff;
     margin-bottom: 0.75rem;
     align-self: flex-start;
   }
