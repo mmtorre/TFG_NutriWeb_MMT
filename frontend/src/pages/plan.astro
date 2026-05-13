@@ -60,7 +60,7 @@ import "../styles/global.css";
   .plan-container {
     padding-top: 8rem;
     min-height: 100vh;
-    background-color: var(--bg-main);
+    background-color: transparent;
   }
 
   .header-section {
@@ -104,9 +104,18 @@ import "../styles/global.css";
   }
 
   @keyframes loader-pulse {
-    0% { transform: scale(0.9); opacity: 0.5; }
-    50% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(0.9); opacity: 0.5; }
+    0% {
+      transform: scale(0.9);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0.9);
+      opacity: 0.5;
+    }
   }
 
   .plan-content {
@@ -117,11 +126,13 @@ import "../styles/global.css";
 
 <style is:global>
   .daily-summary {
-    background-color: var(--bg-sub);
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 2.5rem;
     margin-bottom: 4rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   }
 
   .summary-grid {
@@ -161,14 +172,17 @@ import "../styles/global.css";
     border-radius: 12px;
     padding: 2rem;
     border: 1px solid var(--border);
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
     display: flex;
     flex-direction: column;
     position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   }
 
   .meal-card:hover {
     background-color: var(--bg-sub);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
   }
 
   .meal-name {
@@ -239,7 +253,7 @@ import "../styles/global.css";
       loginBtn.outerHTML = `
         <div class="user-menu" style="display: flex; align-items: center; gap: 0.75rem;">
           <span class="user-greeting" style="font-weight: 500; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
-            <span style="opacity: 0.6;">👋</span> ${userName}
+            <span style="opacity: 0.6;"></span> ${userName}
           </span>
           <button id="logout-btn" class="btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">Cerrar sesión</button>
         </div>
@@ -288,7 +302,7 @@ import "../styles/global.css";
       const altura = userData.altura;
       const edad = userData.edad;
       const sexo = userData.sexo;
-      const actividad = userData.nivelActividad || userData.actividad; 
+      const actividad = userData.nivelActividad || userData.actividad;
       const objetivo = userData.objetivo;
 
       if (subtitle) {
@@ -297,7 +311,7 @@ import "../styles/global.css";
 
       // 2. Llamar al nuevo endpoint GET /api/macros con 6 parámetros
       const macrosRes = await fetch(
-        `${import.meta.env.PUBLIC_API_URL}/api/macros?sexo=${sexo}&peso=${peso}&altura=${altura}&edad=${edad}&actividad=${actividad}&objetivo=${objetivo}`
+        `${import.meta.env.PUBLIC_API_URL}/api/macros?sexo=${sexo}&peso=${peso}&altura=${altura}&edad=${edad}&actividad=${actividad}&objetivo=${objetivo}`,
       );
       if (!macrosRes.ok)
         throw new Error("Error al conectar con la API de Macros");
@@ -347,7 +361,7 @@ import "../styles/global.css";
               </div>
             `;
           }
-          
+
           cardsHtml += `</div>`;
 
           const summaryHtml = `
