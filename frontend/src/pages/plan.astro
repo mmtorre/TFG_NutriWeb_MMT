@@ -314,6 +314,12 @@ import "../styles/global.css";
       // 1. Obtener datos del usuario
       const userRes = await fetch(
         `${import.meta.env.PUBLIC_API_URL}/api/userdata/${userEmail}`,
+        {
+          cache: "no-store",
+          headers: {
+            "X-API-KEY": import.meta.env.PUBLIC_NUTRIWEB_API_KEY,
+          },
+        },
       );
       if (!userRes.ok) {
         throw new Error(
@@ -343,6 +349,12 @@ import "../styles/global.css";
       // 2. Llamar al nuevo endpoint GET /api/macros con 6 parámetros
       const macrosRes = await fetch(
         `${import.meta.env.PUBLIC_API_URL}/api/macros?sexo=${sexo}&peso=${peso}&altura=${altura}&edad=${edad}&actividad=${actividad}&objetivo=${objetivo}`,
+        {
+          cache: "no-store",
+          headers: {
+            "X-API-KEY": import.meta.env.PUBLIC_NUTRIWEB_API_KEY,
+          },
+        },
       );
       if (!macrosRes.ok)
         throw new Error("Error al conectar con la API de Macros");

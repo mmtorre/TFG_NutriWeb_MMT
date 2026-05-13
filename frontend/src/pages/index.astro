@@ -257,6 +257,12 @@ import Layout from "../layouts/Layout.astro";
     try {
       const response = await fetch(
         `${import.meta.env.PUBLIC_API_URL}/api/userdata/${userEmail}`,
+        {
+          cache: "no-store",
+          headers: {
+            "X-API-KEY": import.meta.env.PUBLIC_NUTRIWEB_API_KEY,
+          },
+        },
       );
       if (response.ok) {
         const data = await response.json();

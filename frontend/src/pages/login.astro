@@ -156,6 +156,7 @@ import "../styles/global.css";
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "X-API-KEY": import.meta.env.PUBLIC_NUTRIWEB_API_KEY,
             },
             body: JSON.stringify({ email, password }),
           },

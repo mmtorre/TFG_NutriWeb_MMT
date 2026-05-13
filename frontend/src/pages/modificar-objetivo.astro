@@ -319,6 +319,12 @@ import "../styles/global.css";
     try {
       const response = await fetch(
         `${import.meta.env.PUBLIC_API_URL}/api/userdata/${userEmail}`,
+        {
+          cache: "no-store",
+          headers: {
+            "X-API-KEY": import.meta.env.PUBLIC_NUTRIWEB_API_KEY,
+          },
+        },
       );
       if (!response.ok) throw new Error("No se pudo obtener la información.");
 
@@ -387,6 +393,7 @@ import "../styles/global.css";
             method: "PUT",
             headers: {
               "Content-Type": "application/json",
+              "X-API-KEY": import.meta.env.PUBLIC_NUTRIWEB_API_KEY,
             },
             body: JSON.stringify(payload),
           },
