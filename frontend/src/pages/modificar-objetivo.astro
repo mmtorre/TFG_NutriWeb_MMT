@@ -287,14 +287,17 @@ import "../styles/global.css";
   if (!userName || !userEmail) {
     window.location.href = "/login";
   } else if (loginBtn) {
-    loginBtn.outerHTML = `
-      <div class="user-menu" style="display: flex; align-items: center; gap: 0.75rem;">
-        <span class="user-greeting" style="font-weight: 500; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem;">
-          <span style="opacity: 0.6;">👋</span> ${userName}
-        </span>
-        <button id="logout-btn" class="btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">Cerrar sesión</button>
-      </div>
-    `;
+      loginBtn.outerHTML = `
+        <div class="user-menu" style="display: flex; align-items: center; gap: 0.75rem;">
+          <a href="/evaluacion" class="user-avatar" style="width: 30px; height: 30px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; border: 1px solid var(--border); color: var(--primary); text-decoration: none; cursor: pointer;">
+            👤
+          </a>
+          <span class="user-greeting" style="font-weight: 500; color: var(--text-main); font-size: 0.9rem;">
+            ${userName}
+          </span>
+          <button id="logout-btn" class="btn-secondary" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">Cerrar sesión</button>
+        </div>
+      `;
 
     document.getElementById("logout-btn")?.addEventListener("click", () => {
       localStorage.removeItem("userName");

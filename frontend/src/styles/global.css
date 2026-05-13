@@ -148,6 +148,15 @@ button {
   transform: rotate(20deg) scale(1.2);
 }
 
+.user-avatar {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.user-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
 .logo .year {
   color: var(--primary);
   font-weight: 400;
@@ -235,6 +244,13 @@ button {
 /* Eliminar blobs */
 .blob {
   display: none;
+}
+
+.hero-buttons-container {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 /* === SECCIÓN CARACTERÍSTICAS === */
@@ -457,7 +473,8 @@ footer {
   .nav-container {
     display: flex;
     justify-content: space-between;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1.25rem;
+    align-items: center;
   }
 
   .nav-links {
@@ -465,35 +482,41 @@ footer {
   }
 
   .logo {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .hero {
-    padding: 7rem 1.5rem 4rem 1.5rem;
+    padding: 6.5rem 1.25rem 4rem 1.25rem;
   }
 
   .hero h1 {
-    font-size: 2.2rem;
+    font-size: 2rem;
     line-height: 1.1;
   }
 
   .hero p {
-    font-size: 1.1rem;
+    font-size: 1rem;
     margin-bottom: 2rem;
   }
 
   .hero-buttons {
+    display: flex;
     flex-direction: column;
     width: 100%;
     max-width: 320px;
-    margin: 0 auto;
-    gap: 0.75rem;
+    margin: 2.5rem auto 0 auto;
+    gap: 0.8rem;
+    align-items: center;
   }
 
   .btn-primary, .btn-secondary {
     width: 100%;
+    display: flex;
     justify-content: center;
+    align-items: center;
     padding: 0.8rem 1.5rem;
+    box-sizing: border-box;
+    text-align: center;
   }
 
   .large {
@@ -504,17 +527,33 @@ footer {
 
   .features-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
   .card {
-    padding: 1.5rem;
+    padding: 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Asegurar que los contenedores de acciones en resultados también se adapten */
+  .results-actions, .modal-actions, .hero-buttons-container {
+    flex-direction: column !important;
+    width: 100%;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  
+  .results-actions a, .results-actions button,
+  .modal-actions a, .modal-actions button {
+    width: 100% !important;
+    margin: 0 !important;
   }
 }
 
 @media (max-width: 480px) {
   .hero h1 {
-    font-size: 2rem;
+    font-size: 1.85rem;
   }
   
   .nav-container {
