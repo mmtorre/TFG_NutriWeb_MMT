@@ -1,23 +1,11 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import NavBar from "../components/NavBar.astro";
 ---
 
 <Layout>
   <!-- Menú de Navegación -->
-  <nav class="navbar">
-    <div class="nav-container">
-      <div class="logo">
-        <span class="icon">🥑</span>
-        NutriWeb <span class="year">2026</span>
-      </div>
-      <ul class="nav-links">
-        <li><a href="/" class="active">Inicio</a></li>
-        <li><a href="/alimentos">Alimentos</a></li>
-        <li><a href="/plan">Plan Nutricional</a></li>
-      </ul>
-      <span id="login-btn"></span>
-    </div>
-  </nav>
+  <NavBar active="inicio" />
 
   <!-- Sección Hero -->
   <header id="inicio" class="hero">

@@ -1,0 +1,197 @@
+---
+export interface Props {
+  active?: "inicio" | "alimentos" | "plan";
+}
+
+const { active } = Astro.props;
+---
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <a
+        href="/"
+        style="text-decoration:none; color:inherit; display:flex; align-items:center; gap:0.5rem;"
+      >
+        <span class="icon">🥑</span>
+        NutriWeb <span class="year">2026</span>
+      </a>
+    </div>
+
+    <!-- Enlaces de la NavBar (Desktop) -->
+    <ul class="nav-links">
+      <li><a href="/" class={active === "inicio" ? "active" : ""}>Inicio</a></li>
+      <li><a href="/alimentos" class={active === "alimentos" ? "active" : ""}>Alimentos</a></li>
+      <li><a href="/plan" class={active === "plan" ? "active" : ""}>Plan Nutricional</a></li>
+    </ul>
+
+    <div style="display: flex; align-items: center; gap: 1rem;">
+      <span id="navbar-login-btn"></span>
+      <!-- Toggle de hamburguesa para móvil -->
+      <div class="mobile-toggle" id="mobile-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Enlaces de la NavBar (Mobile) -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="/" class={active === "inicio" ? "active" : ""}>Inicio</a>
+    <a href="/alimentos" class={active === "alimentos" ? "active" : ""}>Alimentos</a>
+    <a href="/plan" class={active === "plan" ? "active" : ""}>Plan Nutricional</a>
+  </div>
+</nav>
+
+<style>
+  /* Toggle de hamburguesa */
+  .mobile-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+    z-index: 1001;
+  }
+  .mobile-toggle span {
+    width: 25px;
+    height: 3px;
+    background-color: var(--text-main);
+    border-radius: 2px;
+    transition: 0.3s;
+  }
+
+  /* Menú desplegable para móvil */
+  .mobile-menu {
+    display: none;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: saturate(180%) blur(20px);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 1rem;
+    gap: 1rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    z-index: 999;
+  }
+  .mobile-menu.open {
+    display: flex;
+  }
+  .mobile-menu a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem;
+    border-radius: 4px;
+    text-align: center;
+  }
+  .mobile-menu a.active {
+    color: var(--primary);
+    background-color: var(--accent);
+  }
+
+  /* Menú desplegable del perfil */
+  :global(.profile-dropdown) {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    padding: 0.5rem;
+    display: none;
+    flex-direction: column;
+    min-width: 150px;
+    z-index: 1000;
+  }
+  :global(.profile-dropdown.open) {
+    display: flex;
+  }
+  :global(.profile-dropdown button) {
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    color: var(--text-main);
+    font-size: 0.9rem;
+  }
+  :global(.profile-dropdown button:hover) {
+    background: var(--bg-sub);
+  }
+
+  @media (max-width: 768px) {
+    .mobile-toggle {
+      display: flex;
+    }
+    :global(.desktop-only) {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Lógica del Navbar y Login (aislada)
+  const navUserName = localStorage.getItem("userName");
+  const navLoginBtn = document.getElementById("navbar-login-btn");
+  const mobileToggle = document.getElementById("mobile-toggle");
+  const mobileMenu = document.getElementById("mobile-menu");
+
+  if (mobileToggle && mobileMenu) {
+    mobileToggle.addEventListener("click", () => {
+      mobileMenu.classList.toggle("open");
+    });
+  }
+
+  if (navLoginBtn) {
+    if (navUserName) {
+      navLoginBtn.outerHTML = `
+        <div class="user-menu" style="display: flex; align-items: center; gap: 0.75rem; position: relative;">
+          <span class="user-greeting desktop-only" style="font-weight: 500; color: var(--text-main); font-size: 0.9rem;">
+            ${navUserName}
+          </span>
+          <div id="navbar-profile-icon" class="user-avatar" style="width: 30px; height: 30px; background: var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; border: 1px solid var(--border); color: var(--primary); cursor: pointer; user-select: none;">
+            👤
+          </div>
+          <div id="navbar-profile-dropdown" class="profile-dropdown">
+            <a href="/evaluacion" style="text-decoration: none; display: block; padding: 0.5rem; color: var(--text-main); font-size: 0.9rem; border-radius: 4px;" onmouseover="this.style.background='var(--bg-sub)'" onmouseout="this.style.background='none'">Mi Perfil</a>
+            <button id="navbar-logout-btn">Cerrar sesión</button>
+          </div>
+        </div>
+      `;
+
+      const profileIcon = document.getElementById("navbar-profile-icon");
+      const profileDropdown = document.getElementById("navbar-profile-dropdown");
+      
+      if (profileIcon && profileDropdown) {
+        profileIcon.addEventListener("click", (e) => {
+          e.stopPropagation();
+          profileDropdown.classList.toggle("open");
+        });
+
+        document.addEventListener("click", (e) => {
+          if (!profileDropdown.contains(e.target as Node) && e.target !== profileIcon) {
+            profileDropdown.classList.remove("open");
+          }
+        });
+      }
+
+      document.getElementById("navbar-logout-btn")?.addEventListener("click", () => {
+        localStorage.removeItem("userName");
+        localStorage.removeItem("userEmail");
+        window.location.href = "/";
+      });
+    } else {
+      navLoginBtn.innerHTML = `
+        <a href="/login" class="btn-primary" style="text-decoration: none; padding: 0.4rem 1rem; font-size: 0.85rem;">Ingresar</a>
+      `;
+    }
+  }
+</script>
