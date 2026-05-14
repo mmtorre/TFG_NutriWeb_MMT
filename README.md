@@ -1,36 +1,48 @@
-﻿# NutriWeb (TFG) - App de seguimiento nutricional
+# NutriWeb (TFG) - App de seguimiento nutricional
 
-Aplicacion full-stack para evaluacion nutricional y generacion de un plan diario de macros.
+Aplicación full-stack para evaluación nutricional, generación de un plan diario de macros y seguimiento personalizado.
+Con una interfaz moderna, minimalista (estilo Notion) y completamente adaptable a los objetivos del usuario.
 
-- Frontend: Astro (paginas + JS en cliente) en `frontend/`
-- Backend: Spring Boot (4.1.0-SNAPSHOT) + Spring MVC + Spring Data JPA en `backend/`
-- Base de datos: PostgreSQL (el proyecto usa Supabase como proveedor en desarrollo)
+## Características Principales
+
+- **Evaluación Nutricional:** Captura de datos biométricos y cálculo automático de IMC, calorías recomendadas y masa muscular estimada.
+- **Plan Nutricional Personalizado:** Generación de un plan de macronutrientes distribuidos en comidas diarias (Desayuno, Almuerzo, Pre-entreno, Cena) según sexo, peso, altura, edad, actividad y objetivo.
+- **Gestión de Objetivos:** Modificación dinámica de objetivos (Pérdida de grasa, Mantenimiento, Ganancia muscular) y datos físicos, con actualización en tiempo real del plan.
+- **Consejos Personalizados:** Página de recomendaciones dinámicas basadas en el objetivo nutricional actual del usuario.
+- **Diseño Minimalista:** Interfaz limpia, clara y profesional inspirada en Notion. Botones redondeados, temas claros con fondos sutiles y modales personalizados para una experiencia premium.
+- **Seguridad y Sincronización:** Integración de API con cabeceras `X-API-KEY`, bypass de caché del navegador para datos frescos, y sincronización fluida entre base de datos y DOM.
+
+## Tecnologías
+
+- **Frontend:** Astro, HTML, Vanilla CSS, JS Vanilla. (Directorio `frontend/`)
+- **Backend:** Spring Boot (4.1.0-SNAPSHOT), Spring MVC, Spring Data JPA. (Directorio `backend/`)
+- **Base de Datos:** PostgreSQL (usando Supabase en desarrollo/producción).
+- **Despliegue:** Preparado para despliegue en plataformas como Railway (con configuración de variables de entorno).
 
 ## Requisitos
 
 - Node.js (recomendado: 18+)
 - Java 21
-- (Opcional) Maven si no usas el wrapper (`mvnw`)
 - PostgreSQL (local o Supabase)
+- (Opcional) Maven si no usas el wrapper (`mvnw`)
 
 ## Puertos por defecto
 
 - Frontend (Astro dev): `http://localhost:4321`
 - Backend (Spring Boot): `http://localhost:8080`
 
-## Arranque rapido (desarrollo)
+## Arranque rápido (desarrollo)
 
 ### 1) Backend
 
-1. Configura la conexion a PostgreSQL.
+1. Configura la conexión a PostgreSQL.
 
-   El backend lee `spring.datasource.*` desde `backend/src/main/resources/application.properties`.
+   El backend lee las propiedades desde `backend/src/main/resources/application.properties`.
+   Además, usa una API Key para asegurar los endpoints: `X-API-KEY`.
 
    Recomendado para desarrollo:
-   - Crea variables de entorno (`SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`) o
-   - Usa un fichero no versionado tipo `application-local.properties` y ejecuta con perfil/override.
-
-
+   - Crea variables de entorno (`SPRING_DATASOURCE_URL`, `SPRING_DATASOURCE_USERNAME`, `SPRING_DATASOURCE_PASSWORD`, `API_KEY`) o
+   - Usa un fichero no versionado tipo `application-local.properties` y ejecuta con perfil.
 
 2. Arranca el backend:
 
@@ -48,75 +60,44 @@ Aplicacion full-stack para evaluacion nutricional y generacion de un plan diario
 
 ### 2) Frontend
 
-1. Instala dependencias y arranca Astro:
+1. Configura el archivo `.env` en la raíz de `frontend/` con las variables necesarias:
+   ```env
+   PUBLIC_API_URL=http://localhost:8080
+   PUBLIC_API_KEY=tu_api_key_aqui
+   ```
 
-```bash
-cd frontend
-npm install
-npm run dev
-```
+2. Instala dependencias y arranca Astro:
 
+   ```bash
+   cd frontend
+   npm install
+   npm run dev
+   ```
 
-## Endpoints (Backend)
+## Endpoints Principales (Backend)
 
 Base URL: `http://localhost:8080`
+*(Requieren cabecera `X-API-KEY`)*
 
-- `GET /api/alimentos`
-  - Devuelve la lista completa de alimentos.
-
-- `POST /api/auth/login`
-  - Body JSON:
-    ```json
-    {"email":"...","password":"..."}
-    ```
-  - Respuesta 200: `LoginResponse` (id, nombre, email, rol, mensaje)
-
-- `POST /api/calculo`
-  - Body JSON (campos requeridos):
-    ```json
-    {"peso":70,"altura":175,"edad":30,"sexo":"masc"}
-    ```
-  - Campo opcional: `email` (si existe, guarda el registro asociado al usuario)
-  - Respuesta 200: `{ "imc": ..., "calorias": ..., "masaMuscular": ... }`
-
-- `GET /api/userdata/{email}`
-  - Devuelve perfil + calculos (imc, calorias, masaMuscular) si hay datos suficientes.
-
-- `POST /api/userdata`
-- `PUT /api/userdata`
-  - Body JSON (UserDataRequest):
-    ```json
-    {
-      "email":"...",
-      "edad":30,
-      "sexo":"masc",
-      "peso":70,
-      "altura":175,
-      "nivelActividad":"moderado",
-      "objetivo":"mantenimiento"
-    }
-    ```
-
-- `GET /api/macros?sexo=...&peso=...&altura=...&edad=...&actividad=...&objetivo=...`
-  - Devuelve un mapa con la distribucion diaria por comida (`desayuno`, `almuerzo`, `preentreno`, `cena`).
+- `POST /api/auth/login`: Autenticación de usuarios.
+- `POST /api/calculo`: Cálculo inicial de métricas biométricas.
+- `GET /api/userdata/{email}`: Obtiene perfil y cálculos del usuario.
+- `POST /api/userdata` y `PUT /api/userdata`: Creación y actualización de datos físicos y objetivos.
+- `GET /api/macros`: Obtiene distribución de macronutrientes diaria según los datos del usuario.
+- `GET /api/alimentos`: Lista de alimentos disponibles en base de datos.
 
 ## Modelo de datos (JPA)
 
 Entidades principales en `backend/src/main/java/com/nutriweb100/model`:
+- `Usuario`
+- `Alimento`
+- `RegistroNutricional`
+- `RegistroAlimento`
 
-- `Usuario` (`usuarios`)
-- `Alimento` (`alimentos`) con `categoria` como `text[]`
-- `RegistroNutricional` (`registros_nutricionales`)
-- `RegistroAlimento` (`registro_alimentos`)
-
-En desarrollo, Hibernate esta configurado con `spring.jpa.hibernate.ddl-auto=update`, asi que crea/actualiza tablas automaticamente en la BD configurada.
-
-## Estructura del repo
+## Estructura del repositorio
 
 ```text
 TFG_NutriWeb_MMT/
   backend/   # Spring Boot API
-  frontend/  # Astro web
+  frontend/  # Astro Web App
 ```
-
-
